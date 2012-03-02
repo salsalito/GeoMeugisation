@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.View.OnClickListener;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,7 +25,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 	private LocationManager lManager;
     private Location location;
     private String choix_source = "";
- 
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,8 +43,10 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
  
         //On affecte un écouteur d'évènement aux boutons
         findViewById(R.id.choix_source).setOnClickListener(this);
-        findViewById(R.id.obtenir_position).setOnClickListener(this);
+        findViewById(R.id.obtenir_adresse).setOnClickListener(this);
         findViewById(R.id.afficherAdresse).setOnClickListener(this);
+        findViewById(R.id.obtenir_position).setOnClickListener(this);
+        findViewById(R.id.refresh).setOnClickListener(this);
     }
  
         //Méthode déclencher au clique sur un bouton
@@ -58,6 +61,12 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		case R.id.afficherAdresse:
 			afficherAdresse();
 			break;
+		case R.id.obtenir_adresse:
+			afficherLatitude();
+			break;
+		case R.id.refresh:
+			reinitialisationEcran();
+			break;
 		default:
 			break;
 		}
@@ -69,9 +78,8 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		((TextView)findViewById(R.id.longitude)).setText("0.0");
 		((TextView)findViewById(R.id.altitude)).setText("0.0");
 		((TextView)findViewById(R.id.adresse)).setText("");
+		((TextView)findViewById(R.id.adresse_etat)).setText("");
  
-		findViewById(R.id.obtenir_position).setEnabled(false);
-		findViewById(R.id.afficherAdresse).setEnabled(false);
 	}
  
 	private void choisirSource() {
@@ -123,33 +131,85 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 	private void afficherAdresse() {
 		setProgressBarIndeterminateVisibility(true);
  
+		geoCoderInformation();
+		//on stop le cercle de chargement
+		setProgressBarIndeterminateVisibility(false);
+	}
+	private void afficherLatitude() {
+		setProgressBarIndeterminateVisibility(true);
+		
+		geoCoderAdresseInformation();
+		//on stop le cercle de chargement
+		setProgressBarIndeterminateVisibility(false);
+	}
+	/**
+	 *  Obtenir les coordonnees avec Adresse
+	 */
+	private void geoCoderAdresseInformation() {
 		//Le geocoder permet de récupérer ou chercher des adresses
 		//gràce à un mot clé ou une position
 		Geocoder geo = new Geocoder(MeugeActivity.this);
 		try {
 			//Ici on récupère la premiere adresse trouvé gràce à la position que l'on a récupéré
+			String monAdresse = ((EditText)findViewById(R.id.adresse)).getText().toString();
 			List
-<Address> adresses = geo.getFromLocation(location.getLatitude(),
-					location.getLongitude(),1);
+			<Address> adresses = geo.getFromLocationName(monAdresse, 1);
+			if(adresses != null && adresses.size() == 1){
+				Address adresse = adresses.get(0);
+				
+				//Si le geocoder a trouver une adresse, alors on l'affiche
+				
+				((TextView)findViewById(R.id.adresse_etat)).setText(String.format("Latitude : %s - Longitude :%s",
+						adresse.getLatitude(),
+						adresse.getLongitude()));
+			}
+			else {
+				//sinon on affiche un message d'erreur
+				((TextView)findViewById(R.id.adresse_etat)).setText("L'adresse n'a pu être déterminée");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+			((TextView)findViewById(R.id.adresse_etat)).setText("L'adresse n'a pu être déterminée");
+		}
+	}
+
+	/**
+	 *  Obtenir les coordonnees avec latitude et longitude
+	 */
+	private void geoCoderInformation() {
+		//Le geocoder permet de récupérer ou chercher des adresses
+		//gràce à un mot clé ou une position
+		double latitude = 0L;
+		double longitude = 0L;
+		Geocoder geo = new Geocoder(MeugeActivity.this);
+		try {
+			//Ici on récupère la premiere adresse trouvé gràce à la position que l'on a récupéré
+		
+			latitude  = Double.valueOf(((TextView)findViewById(R.id.latitude)).getText().toString()) ;
+			longitude = Double.valueOf(((TextView)findViewById(R.id.longitude)).getText().toString()) ;
+			List
+<Address> adresses = geo.getFromLocation(latitude,
+					longitude,1);
  
 			if(adresses != null && adresses.size() == 1){
 				Address adresse = adresses.get(0);
 				//Si le geocoder a trouver une adresse, alors on l'affiche
-				((TextView)findViewById(R.id.adresse)).setText(String.format("%s, %s %s",
+				((EditText)findViewById(R.id.adresse)).setText(String.format("%s %s %s ,%s",
 						adresse.getAddressLine(0),
 						adresse.getPostalCode(),
-						adresse.getLocality()));
+						adresse.getLocality(),
+						adresse.getCountryName()));
 			}
 			else {
 				//sinon on affiche un message d'erreur
-				((TextView)findViewById(R.id.adresse)).setText("L'adresse n'a pu être déterminée");
+				((TextView)findViewById(R.id.adresse_etat)).setText("L'adresse n'a pu être déterminée");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			((TextView)findViewById(R.id.adresse)).setText("L'adresse n'a pu être déterminée");
+			((TextView)findViewById(R.id.adresse_etat)).setText("L'adresse n'a pu être déterminée");
+		} catch (NumberFormatException e) {
+			((TextView)findViewById(R.id.adresse_etat)).setText("Coordonnées entrées invalides");
 		}
-		//on stop le cercle de chargement
-		setProgressBarIndeterminateVisibility(false);
 	}
  
 	public void onLocationChanged(Location location) {
