@@ -2,7 +2,7 @@ package com.meuge.geolocalisation;
 
 import java.io.IOException;
 import java.util.List;
- 
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,9 +14,12 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,7 +51,23 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
         findViewById(R.id.obtenir_position).setOnClickListener(this);
         findViewById(R.id.refresh).setOnClickListener(this);
     }
- 
+    
+    //On cree le menu Quitter
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	switch (item.getItemId()) {
+    		case R.id.icontext : finish(); break; 
+    	}
+    	return true;
+    }
+    
         //Méthode déclencher au clique sur un bouton
 	public void onClick(View v) {
 		switch (v.getId()) {
