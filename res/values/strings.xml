@@ -3,5 +3,5 @@
 
     <string name="hello">Hello World, MeugeActivity!</string>
     <string name="app_name">GeoMeugisation</string>
-
+	<string name="mapskey">0JvwL-yIit1thjxATDo5RdBbeqqYjNz1QAasVkg</string>
 </resources>

@@ -28,7 +28,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 	private LocationManager lManager;
     private Location location;
     private String choix_source = "";
-    
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +36,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
         //On spécifie que l'on va avoir besoin de gérer l'affichage du cercle de chargement
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
  
-        setContentView(R.layout.main);
+        setContentView(R.layout.meuge_layout);
  
         //On récupère le service de localisation
         lManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
@@ -73,6 +73,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		switch (v.getId()) {
 		case R.id.choix_source:
 			choisirSource();
+			obtenirPosition();
 			break;
 		case R.id.obtenir_position:
 			obtenirPosition();
@@ -140,6 +141,8 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		lManager.requestLocationUpdates(choix_source, 60000, 0, this);
 	}
  
+
+	
 	private void afficherLocation() {
 		//On affiche les informations de la position a l'écran
 		((TextView)findViewById(R.id.latitude)).setText(String.valueOf(location.getLatitude()));
