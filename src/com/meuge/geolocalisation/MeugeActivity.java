@@ -125,6 +125,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 				//on ajoute dans la barre de titre de l'application le nom de la source utilisé
 				setTitle(String.format("%s - %s", getString(R.string.app_name),
 						choix_source));
+				obtenirPosition();
 			}
 		})
 		.create().show();
