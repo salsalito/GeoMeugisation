@@ -73,7 +73,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		switch (v.getId()) {
 		case R.id.choix_source:
 			choisirSource();
-			obtenirPosition();
+//			obtenirPosition();
 			break;
 		case R.id.obtenir_position:
 			obtenirPosition();
