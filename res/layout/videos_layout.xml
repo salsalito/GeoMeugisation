@@ -3,11 +3,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-         <TextView android:text="Et Je danse danse meuge"
-  			android:padding="15dip"
-  			android:textSize="18dip"
-  			android:layout_width="fill_parent"
-  			android:layout_height="wrap_content"/>
-    
-
+  <com.google.android.maps.MapView 
+        android:id="@+id/mapView"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:enabled="true"
+        android:clickable="true"
+        android:apiKey="0JvwL-yIit1thjxATDo5RdBbeqqYjNz1QAasVkg"
+        />
 </LinearLayout>

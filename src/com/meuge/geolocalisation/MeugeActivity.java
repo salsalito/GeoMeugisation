@@ -48,7 +48,6 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
         findViewById(R.id.choix_source).setOnClickListener(this);
         findViewById(R.id.obtenir_adresse).setOnClickListener(this);
         findViewById(R.id.afficherAdresse).setOnClickListener(this);
-        findViewById(R.id.obtenir_position).setOnClickListener(this);
         findViewById(R.id.refresh).setOnClickListener(this);
     }
     
@@ -73,10 +72,6 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		switch (v.getId()) {
 		case R.id.choix_source:
 			choisirSource();
-//			obtenirPosition();
-			break;
-		case R.id.obtenir_position:
-			obtenirPosition();
 			break;
 		case R.id.afficherAdresse:
 			afficherAdresse();
@@ -119,7 +114,6 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		new AlertDialog.Builder(MeugeActivity.this)
 		.setItems(sources, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				findViewById(R.id.obtenir_position).setEnabled(true);
 				//on stock le choix de la source choisi
 				choix_source = sources[which];
 				//on ajoute dans la barre de titre de l'application le nom de la source utilisé

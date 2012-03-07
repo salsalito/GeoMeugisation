@@ -13,7 +13,7 @@ public class OngletsActivity extends TabActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        TabHost tabHost =(TabHost)findViewById(android.R.id.tabhost);
+        TabHost tabHost =  getTabHost(); 
         //initilatise avant l'affectation des activités
         tabHost.setup(); 
         
@@ -40,6 +40,7 @@ public class OngletsActivity extends TabActivity {
         tabHost.addTab(songspec); // Adding songs tab
         tabHost.addTab(videospec); // Adding videos tab
         tabHost.addTab(meugespec); // Adding meuge tab
+        tabHost.setCurrentTab(2);
     }
 
 }
