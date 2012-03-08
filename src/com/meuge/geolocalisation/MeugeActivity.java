@@ -1,12 +1,14 @@
 package com.meuge.geolocalisation;
 
 import java.io.IOException;
+import java.nio.channels.Pipe.SourceChannel;
 import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -71,7 +73,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.choix_source:
-			choisirSource();
+			choisirSaSource();
 			break;
 		case R.id.afficherAdresse:
 			afficherAdresse();
@@ -96,10 +98,34 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		((TextView)findViewById(R.id.adresse_etat)).setText("");
  
 	}
- 
+    
+    private void showGpsOptions(){  
+        Intent gpsOptionsIntent = new Intent(  
+                android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);  
+        startActivity(gpsOptionsIntent);  
+    }  
+    
+	private void createGpsDisabledAlert(){  
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);  
+    builder.setMessage("Votre GPS est eteint! Voulez vous l'allumer ?")  
+         .setCancelable(false)  
+         .setPositiveButton("GPS OK",  
+              new DialogInterface.OnClickListener(){  
+              public void onClick(DialogInterface dialog, int id){  
+                   showGpsOptions();
+              }  
+         });  
+         builder.setNegativeButton("GPS KO",  
+              new DialogInterface.OnClickListener(){  
+              public void onClick(DialogInterface dialog, int id){  
+                   dialog.cancel();
+                   choisirSource();
+              }  
+         });  
+    AlertDialog alert = builder.create(); 
+    alert.show(); 
+    }  
 	private void choisirSource() {
-		reinitialisationEcran();
- 
 		//On demande au service la liste des sources disponibles.
 		List <String> providers = lManager.getProviders(true);
 		final String[] sources = new String[providers.size()];
@@ -123,6 +149,17 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 			}
 		})
 		.create().show();
+	}
+
+	/**
+	 * 
+	 */
+	private void choisirSaSource() {
+		reinitialisationEcran();
+	    if (!lManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){  
+	          createGpsDisabledAlert();  
+	    }
+	    else choisirSource();
 	}
  
 	private void obtenirPosition() {
