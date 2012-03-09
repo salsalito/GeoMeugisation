@@ -5,11 +5,9 @@ package com.meuge.geolocalisation;
 
 import java.util.List;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Point;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.View;
 import android.widget.ZoomControls;
 
 import com.google.android.maps.GeoPoint;
@@ -24,6 +22,22 @@ import com.google.android.maps.Overlay;
  */
 public class VideosActivity extends MapActivity {
 
+	  public boolean onKeyDown(int keyCode, KeyEvent event) 
+	    {
+		  MapView mapView = (MapView) findViewById(R.id.mapView);  
+		  MapController mc = mapView.getController(); 
+	        switch (keyCode) 
+	        {
+	            case KeyEvent.KEYCODE_3:
+	                mc.zoomIn();
+	                break;
+	            case KeyEvent.KEYCODE_1:
+	                mc.zoomOut();
+	                break;
+	        }
+	        return super.onKeyDown(keyCode, event);
+	    }    
+	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -44,16 +58,42 @@ public class VideosActivity extends MapActivity {
         //Positionnement de nos coordonnées
         mc.animateTo(p);
         mc.setZoom(17);
-        VideosActivityData mapOverlay = new VideosActivityData(p,getResources());
+        VideosActivityData mapOverlay = new VideosActivityData(p,getResources(), getBaseContext());
         List<Overlay> listOfOverlays = mapView.getOverlays();
         listOfOverlays.clear();
         listOfOverlays.add(mapOverlay);        
         mapView.invalidate();
         // Vue des rues
         mapView.setStreetView(true);
-        ZoomControls zommControls = (ZoomControls)  findViewById(R.id.zoomcontrols);
-        zommControls.setClickable(true);
+        ZoomControls mControls = (ZoomControls)  findViewById(R.id.zoomcontrols);
+        mControls.setOnZoomInClickListener(ListenerZoomIn(mc));
+        mControls.setOnZoomOutClickListener(ListenerZoomOut(mc));
+       
     }
+	/**
+	 * Diminue le zoom
+	 */
+	private View.OnClickListener ListenerZoomOut(final MapController mc) {
+		return new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mc.zoomOut();
+			}
+		};
+	}
+
+	/**
+	 * Agrandit le zoom
+	 */
+	private View.OnClickListener ListenerZoomIn(final MapController mc) {
+		return new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				mc.zoomIn();
+			}
+		};
+	}
+		
 	@Override
 	protected boolean isRouteDisplayed() {
 		// TODO Auto-generated method stub

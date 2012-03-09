@@ -33,7 +33,6 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
- 
         //On spécifie que l'on va avoir besoin de gérer l'affichage du cercle de chargement
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
  
