@@ -1,7 +1,6 @@
 package com.meuge.geolocalisation;
 
 import java.io.IOException;
-import java.nio.channels.Pipe.SourceChannel;
 import java.util.List;
 
 import android.app.Activity;
@@ -98,13 +97,13 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		((TextView)findViewById(R.id.adresse_etat)).setText("");
  
 	}
-    
+    //Va a la page GPS (independant de nous)
     private void showGpsOptions(){  
         Intent gpsOptionsIntent = new Intent(  
                 android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);  
         startActivity(gpsOptionsIntent);  
     }  
-    
+    //Affiche la toolbox fdu GPS et ensuite realise l'action associee
 	private void createGpsDisabledAlert(){  
     AlertDialog.Builder builder = new AlertDialog.Builder(this);  
     builder.setMessage("Votre GPS est eteint! Voulez vous l'allumer ?")  
@@ -124,7 +123,38 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
          });  
     AlertDialog alert = builder.create(); 
     alert.show(); 
-    }  
+    }
+	// J'ai perdu le focus
+	@Override
+	public void onStop()
+	{
+	    saveCoordonnees();
+	    super.onStop();
+	}
+
+	/** Called when the activity looses focus **/
+	@Override
+	public void onPause()
+	{
+		saveCoordonnees();
+		super.onPause();
+	}
+	
+	//Sauvegarde 
+	private void saveCoordonnees() {
+		final Bundle bundle = new Bundle();
+		Intent myIntent = getParent().getIntent();
+		double []arrayInfos = new double[2];
+		arrayInfos[0] = getLatitude();
+		arrayInfos[1] = getLongitude();
+		bundle.putDoubleArray("GPSINFO", arrayInfos);
+		bundle.putString("ADRESSEINFO", getAdresse());
+		myIntent.putExtras(bundle);
+		
+		setIntent(myIntent);
+	}
+
+	//Affiche les sources possibles
 	private void choisirSource() {
 		//On demande au service la liste des sources disponibles.
 		List <String> providers = lManager.getProviders(true);
@@ -205,7 +235,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		Geocoder geo = new Geocoder(MeugeActivity.this);
 		try {
 			//Ici on récupère la premiere adresse trouvé gràce à la position que l'on a récupéré
-			String monAdresse = ((EditText)findViewById(R.id.adresse)).getText().toString();
+			String monAdresse = getAdresse();
 			List
 			<Address> adresses = geo.getFromLocationName(monAdresse, 1);
 			if(adresses != null && adresses.size() == 1){
@@ -226,7 +256,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 			((TextView)findViewById(R.id.adresse_etat)).setText("L'adresse n'a pu être déterminée");
 		}
 	}
-
+ 	
 	/**
 	 *  Obtenir les coordonnees avec latitude et longitude
 	 */
@@ -239,8 +269,8 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		try {
 			//Ici on récupère la premiere adresse trouvé gràce à la position que l'on a récupéré
 		
-			latitude  = Double.valueOf(((TextView)findViewById(R.id.latitude)).getText().toString()) ;
-			longitude = Double.valueOf(((TextView)findViewById(R.id.longitude)).getText().toString()) ;
+			latitude  = getLatitude() ;
+			longitude = getLongitude() ;
 			List
 <Address> adresses = geo.getFromLocation(latitude,
 					longitude,1);
@@ -265,7 +295,38 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 			((TextView)findViewById(R.id.adresse_etat)).setText("Coordonnées entrées invalides");
 		}
 	}
- 
+
+	/**
+	 * Obtenir la longitude
+	 */
+	private Double getLongitude() {
+		Double retour = null;
+		try {
+		return Double.valueOf(((TextView)findViewById(R.id.longitude)).getText().toString());
+		} catch (NumberFormatException e) {
+			retour = (double) 0L;
+		}
+		return retour;
+	}
+
+	/**
+	 * Obtenir la latitude
+	 */
+	private Double getLatitude() {
+		Double retour = null;
+		try {
+			retour = Double.valueOf(((TextView)findViewById(R.id.latitude)).getText().toString());
+		} catch (NumberFormatException e) {
+			retour = (double) 0L;
+		}
+		return retour;
+	}
+    /**
+     * Obtenir l'adresse
+     */
+	private String getAdresse() {
+		return ((EditText)findViewById(R.id.adresse)).getText().toString();
+	}
 	public void onLocationChanged(Location location) {
 		//Lorsque la position change...
 		Log.i("Tuto géolocalisation", "La position a changé.");

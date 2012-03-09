@@ -5,7 +5,9 @@ import android.app.TabActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TabHost;
+import android.widget.TabWidget;
 import android.widget.TabHost.TabSpec;
+import android.widget.TextView;
 
 public class OngletsActivity extends TabActivity {
     /** Called when the activity is first created. */
@@ -41,6 +43,9 @@ public class OngletsActivity extends TabActivity {
         tabHost.addTab(videospec); // Adding videos tab
         tabHost.addTab(meugespec); // Adding meuge tab
         tabHost.setCurrentTab(2);
-    }
+        
 
+
+    }
+ 
 }
