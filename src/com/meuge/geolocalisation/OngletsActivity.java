@@ -16,6 +16,7 @@ public class OngletsActivity extends TabActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        maDataBase();
         TabHost tabHost =  getTabHost(); 
         //initilatise avant l'affectation des activités
         tabHost.setup(); 
