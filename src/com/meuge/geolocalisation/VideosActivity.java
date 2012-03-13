@@ -5,6 +5,8 @@ package com.meuge.geolocalisation;
 
 import java.util.List;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -45,7 +47,19 @@ public class VideosActivity extends MapActivity {
     	double []arrayInfos = new double[2];
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.videos_layout);
-        // Recuperation des informations passées par les onglets
+        if (isOnline())
+        	afficheCarte();
+       
+    }
+
+    private boolean isOnline() {
+    	ConnectivityManager connectivityManager =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+    	return connectivityManager.getActiveNetworkInfo().isConnectedOrConnecting();
+
+    }
+	private void afficheCarte() {
+		double[] arrayInfos;
+		// Recuperation des informations passées par les onglets
         Bundle extras = getParent().getIntent().getExtras();
         arrayInfos = (double []) extras.getDoubleArray("GPSINFO");
         String adresse = (String) extras.getString("ADRESSEINFO");
@@ -68,8 +82,7 @@ public class VideosActivity extends MapActivity {
         ZoomControls mControls = (ZoomControls)  findViewById(R.id.zoomcontrols);
         mControls.setOnZoomInClickListener(ListenerZoomIn(mc));
         mControls.setOnZoomOutClickListener(ListenerZoomOut(mc));
-       
-    }
+	}
 	/**
 	 * Diminue le zoom
 	 */
