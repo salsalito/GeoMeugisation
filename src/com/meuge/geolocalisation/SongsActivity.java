@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 public class SongsActivity extends Activity {
-	 private static Db4oHelper db4oHelper ;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.songs_layout);   
@@ -26,9 +25,9 @@ public class SongsActivity extends Activity {
 		{
 			resultat += i.getLatitude() + " " + i.getLongitude() + " => "+ i.getAdresse()+"\n";
 		}
+		cp.close();
+		cp.db().close();
     	((TextView)findViewById(R.id.monChamp)).setText(resultat);
-    	cp.close();
-    	cp.db().close();
     	
     }
 }
