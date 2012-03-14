@@ -115,11 +115,16 @@
 	     	android:layout_width="50dip" 
 			android:id="@+id/refresh" />
 	</LinearLayout>
- 
+ 	<Button android:layout_height="wrap_content" 
+	     	android:drawableLeft="@drawable/document_save"
+	     	android:layout_width="50dip" 
+	     	android:layout_centerHorizontal="true"
+	     	android:layout_below="@+id/adresse"
+			android:id="@+id/save" />
 	<TextView android:layout_width="wrap_content"
 		android:layout_height="wrap_content" 
 		android:id="@+id/adresse_etat"
-		android:layout_below="@+id/adresse"
+		android:layout_below="@+id/save"
 		android:layout_centerHorizontal="true" 
 		android:layout_marginTop="10dip" />
 

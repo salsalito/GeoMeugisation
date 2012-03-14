@@ -3,6 +3,8 @@ package com.meuge.geolocalisation;
 import java.io.IOException;
 import java.util.List;
 
+import com.db4o.ObjectContainer;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -29,7 +31,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 	private LocationManager lManager;
     private Location location;
     private String choix_source = "";
-
+    
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +51,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
         findViewById(R.id.obtenir_adresse).setOnClickListener(this);
         findViewById(R.id.afficherAdresse).setOnClickListener(this);
         findViewById(R.id.refresh).setOnClickListener(this);
+        findViewById(R.id.save).setOnClickListener(this);
     }
     
     //On cree le menu Quitter
@@ -81,6 +84,9 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 			break;
 		case R.id.refresh:
 			reinitialisationEcran();
+			break;
+		case R.id.save:
+			saveDBCoordonnees();
 			break;
 		default:
 			break;
@@ -127,16 +133,16 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 	@Override
 	public void onStop()
 	{
-	    saveCoordonnees();
 	    super.onStop();
+	    saveCoordonnees();
 	}
 
 	/** Called when the activity looses focus **/
 	@Override
 	public void onPause()
 	{
-		saveCoordonnees();
 		super.onPause();
+		saveCoordonnees();
 	}
 	
 	//Sauvegarde 
@@ -152,7 +158,25 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		
 		setIntent(myIntent);
 	}
-
+	
+  
+	//Sauvegarde en base
+	private void saveDBCoordonnees()
+	{
+		CoordonneesProvider cp = new CoordonneesProvider(Coordonnees.class, this);
+		cp.db();
+        Coordonnees tmp = new Coordonnees();
+        tmp.setAdresse(getAdresse());
+        tmp.setLatitude(getLatitude());
+        tmp.setLongitude(getLongitude());
+        cp.store(tmp);
+        cp.db().commit();
+        cp.close();
+        cp.db().close();
+        
+//        dbContainer.store(tmp);
+//        dbContainer.commit();
+	}
 	//Affiche les sources possibles
 	private void choisirSource() {
 		//On demande au service la liste des sources disponibles.
