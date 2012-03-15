@@ -14,7 +14,8 @@ public class Coordonnees implements  Serializable {
 	private String adresse;
 	private double latitude;
 	private double longitude;
-
+	private String UUID;
+	
 	public long getId() {
 		return id;
 	}
@@ -47,5 +48,12 @@ public class Coordonnees implements  Serializable {
 		this.longitude = longitude;
 	}
 	
+	public String getUUID() {
+		return UUID;
+	}
+
+	public void setUUID(String uuid) {
+		this.UUID = uuid;
+	}
 	
 }

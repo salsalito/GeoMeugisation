@@ -19,7 +19,6 @@ public class SongsActivity extends Activity {
     private void ecritureTexte()
     {
     	String resultat = "";
-    	int yuyu;
     	CoordonneesProvider cp = new CoordonneesProvider(Coordonnees.class, this);
 		cp.db();
 		List<Coordonnees> tmp = cp.findAll();

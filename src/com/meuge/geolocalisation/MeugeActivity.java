@@ -20,6 +20,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -168,22 +169,36 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		
 		setIntent(myIntent);
 	}
-	
-  
 	//Sauvegarde en base
 	private void saveDBCoordonnees()
 	{
-		CoordonneesProvider cp = new CoordonneesProvider(Coordonnees.class, this);
-		cp.db();
-        Coordonnees tmp = new Coordonnees();
-        tmp.setAdresse(getAdresse());
-        tmp.setLatitude(getLatitude());
-        tmp.setLongitude(getLongitude());
-        cp.store(tmp);
-        cp.db().commit();
-        cp.close();
-        cp.db().close();
-        
+		if (!(getLatitude()==(double) 0L && getLongitude()==(double) 0L))
+		{
+			boolean retour = false;
+			CoordonneesProvider cp = new CoordonneesProvider(Coordonnees.class, this);
+			cp.db();
+			//Coordonees dans la base
+			List<Coordonnees> tmpList = cp.findAll();
+			for (Coordonnees i : tmpList)
+			{
+				if (i.getLatitude() == getLatitude().doubleValue() && 
+					i.getLongitude() == getLongitude().doubleValue() && 
+					i.getUUID() == getUUID())
+					retour = true;
+			}
+			if(!retour)
+			{
+				Coordonnees tmp = new Coordonnees();
+		        tmp.setAdresse(getAdresse());
+		        tmp.setLatitude(getLatitude());
+		        tmp.setLongitude(getLongitude());
+		        tmp.setUUID(getUUID());
+		        cp.store(tmp);
+		        cp.db().commit();
+			}
+	        cp.close();
+	        cp.db().close();
+		}
 	}
 	//Affiche les sources possibles
 	private void choisirSource() {
@@ -358,6 +373,16 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 	private String getAdresse() {
 		return ((EditText)findViewById(R.id.adresse)).getText().toString();
 	}
+	
+	/**
+     * Obtenir L'UUID
+     */
+	private String getUUID() {
+		TelephonyManager tManager = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
+		return tManager.getDeviceId();
+	}
+	
+	
 	public void onLocationChanged(Location location) {
 		//Lorsque la position change...
 		Log.i("Tuto géolocalisation", "La position a changé.");
