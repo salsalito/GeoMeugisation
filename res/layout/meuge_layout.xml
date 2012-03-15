@@ -115,16 +115,26 @@
 	     	android:layout_width="50dip" 
 			android:id="@+id/refresh" />
 	</LinearLayout>
+	<LinearLayout android:id="@+id/options"
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:layout_below="@+id/adresse" 
+		android:layout_centerHorizontal="true"
+		android:layout_marginTop="10dip">
+	 	<ToggleButton android:layout_height="wrap_content" 
+	     	android:layout_width="70dip" 
+			android:id="@+id/world"
+			android:textOff="Off Stage"
+			android:textOn="On Stage"/>
  	<Button android:layout_height="wrap_content" 
 	     	android:drawableLeft="@drawable/document_save"
 	     	android:layout_width="50dip" 
-	     	android:layout_centerHorizontal="true"
-	     	android:layout_below="@+id/adresse"
 			android:id="@+id/save" />
+ 	</LinearLayout>
 	<TextView android:layout_width="wrap_content"
 		android:layout_height="wrap_content" 
 		android:id="@+id/adresse_etat"
-		android:layout_below="@+id/save"
+		android:layout_below="@+id/options"
 		android:layout_centerHorizontal="true" 
 		android:layout_marginTop="10dip" />
 

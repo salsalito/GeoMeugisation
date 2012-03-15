@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 public class SongsActivity extends Activity {
+	 private static Db4oHelper db4oHelper ;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.songs_layout);   
@@ -18,6 +19,7 @@ public class SongsActivity extends Activity {
     private void ecritureTexte()
     {
     	String resultat = "";
+    	int yuyu;
     	CoordonneesProvider cp = new CoordonneesProvider(Coordonnees.class, this);
 		cp.db();
 		List<Coordonnees> tmp = cp.findAll();

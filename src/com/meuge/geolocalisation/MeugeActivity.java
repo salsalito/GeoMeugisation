@@ -2,6 +2,12 @@ package com.meuge.geolocalisation;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+
+import com.db4o.ObjectContainer;
+
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -13,6 +19,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,11 +30,13 @@ import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 public class MeugeActivity extends Activity  implements OnClickListener, LocationListener {
 	private LocationManager lManager;
     private Location location;
     private String choix_source = "";
+    final Handler handler = new Handler();
     
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +58,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
         findViewById(R.id.afficherAdresse).setOnClickListener(this);
         findViewById(R.id.refresh).setOnClickListener(this);
         findViewById(R.id.save).setOnClickListener(this);
+        findViewById(R.id.world).setOnClickListener(this);
     }
     
     //On cree le menu Quitter
@@ -84,6 +94,9 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 			break;
 		case R.id.save:
 			saveDBCoordonnees();
+			break;
+		case R.id.world:
+			tacheDeFond();
 			break;
 		default:
 			break;
@@ -152,8 +165,8 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		bundle.putDoubleArray("GPSINFO", arrayInfos);
 		bundle.putString("ADRESSEINFO", getAdresse());
 		myIntent.putExtras(bundle);
-		setIntent(myIntent);
 		
+		setIntent(myIntent);
 	}
 	
   
@@ -374,7 +387,52 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		//... on stop le cercle de chargement
 		setProgressBarIndeterminateVisibility(false);
 	}
- 
+	//Demarrage en tache de fond
+	public void tacheDeFond() {
+		ToggleButton tgb = (ToggleButton) findViewById(R.id.world);
+		if (tgb.isChecked() && choix_source.length()==0)
+		{
+			Toast.makeText(this, "Choississez au moins une source !! ", Toast.LENGTH_SHORT).show();
+			tgb.setChecked(false);
+		}
+		else
+			startThread();
+	    
+	}
+	/**
+	 * 
+	 */
+	private void startThread() {
+		final Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new TimerTask() {
+		@Override
+		public void run() {
+			ToggleButton tgb = (ToggleButton) findViewById(R.id.world);
+			if (!tgb.isChecked())
+			{
+				timer.cancel();
+			}
+			else
+				handler.post(checkCoords());
+		}
+		}, 10000, 10000); //delay, //periode
+	}
+
+	/**
+	 * @return
+	 */
+	private Runnable checkCoords() {
+		return new Runnable() {
+			  @Override
+			  public void run() {
+				  	obtenirPosition();
+				  	geoCoderInformation();
+			    	handler.removeCallbacks(this);
+			  }
+			  
+			};
+	}
+	
 	public void onProviderEnabled(String provider) {
 		Log.i("Géolocalisation", "La source a été activé.");
 	}
