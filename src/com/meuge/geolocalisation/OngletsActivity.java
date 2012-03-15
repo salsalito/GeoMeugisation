@@ -13,7 +13,6 @@ import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
 
 public class OngletsActivity extends TabActivity {
-	
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {

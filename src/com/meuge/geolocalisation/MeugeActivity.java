@@ -2,9 +2,6 @@ package com.meuge.geolocalisation;
 
 import java.io.IOException;
 import java.util.List;
-
-import com.db4o.ObjectContainer;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -155,8 +152,8 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		bundle.putDoubleArray("GPSINFO", arrayInfos);
 		bundle.putString("ADRESSEINFO", getAdresse());
 		myIntent.putExtras(bundle);
-		
 		setIntent(myIntent);
+		
 	}
 	
   
