@@ -184,8 +184,6 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
         cp.close();
         cp.db().close();
         
-//        dbContainer.store(tmp);
-//        dbContainer.commit();
 	}
 	//Affiche les sources possibles
 	private void choisirSource() {
