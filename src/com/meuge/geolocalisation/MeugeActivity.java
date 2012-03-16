@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.db4o.ObjectContainer;
 
 
 import android.app.Activity;
@@ -184,7 +183,6 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 	{
 		if (!(getLatitude()==(double) 0L && getLongitude()==(double) 0L))
 		{
-			boolean retour = false;
 			CoordonneesProvider cp = new CoordonneesProvider(Coordonnees.class, this);
 			//Coordonnees dans la base
 			List <Coordonnees> isInDB = cp.findByLatLong(getCoords());

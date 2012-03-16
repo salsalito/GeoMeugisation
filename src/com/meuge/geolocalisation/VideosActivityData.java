@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Locale;
 
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

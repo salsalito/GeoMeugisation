@@ -44,7 +44,6 @@ public class VideosActivity extends MapActivity {
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-    	double []arrayInfos = new double[2];
     	super.onCreate(savedInstanceState);
         setContentView(R.layout.videos_layout);
         if (isOnline())
@@ -62,7 +61,7 @@ public class VideosActivity extends MapActivity {
 		// Recuperation des informations passées par les onglets
         Bundle extras = getParent().getIntent().getExtras();
         arrayInfos = (double []) extras.getDoubleArray("GPSINFO");
-        String adresse = (String) extras.getString("ADRESSEINFO");
+        //String adresse = (String) extras.getString("ADRESSEINFO");
         
         MapView mapView = (MapView) findViewById(R.id.mapView);
         MapController mc = mapView.getController();
