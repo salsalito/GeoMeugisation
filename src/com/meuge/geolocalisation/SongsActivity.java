@@ -20,7 +20,6 @@ public class SongsActivity extends Activity {
     {
     	String resultat = "";
     	CoordonneesProvider cp = new CoordonneesProvider(Coordonnees.class, this);
-		cp.db();
 		List<Coordonnees> tmp = cp.findAll();
 		for (Coordonnees i : tmp)
 		{

@@ -169,6 +169,16 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		
 		setIntent(myIntent);
 	}
+	//Fais un bean
+	private Coordonnees getCoords()
+	{
+		Coordonnees retour = new Coordonnees();
+		retour.setAdresse(getAdresse());
+		retour.setLatitude(getLatitude());
+		retour.setLongitude(getLongitude());
+		retour.setUUID(getUUID());
+		return retour;
+	}
 	//Sauvegarde en base
 	private void saveDBCoordonnees()
 	{
@@ -176,24 +186,12 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		{
 			boolean retour = false;
 			CoordonneesProvider cp = new CoordonneesProvider(Coordonnees.class, this);
-			cp.db();
-			//Coordonees dans la base
-			List<Coordonnees> tmpList = cp.findAll();
-			for (Coordonnees i : tmpList)
+			//Coordonnees dans la base
+			List <Coordonnees> isInDB = cp.findByLatLong(getCoords());
+			
+			if(isInDB.size()==0)
 			{
-				if (i.getLatitude() == getLatitude().doubleValue() && 
-					i.getLongitude() == getLongitude().doubleValue() && 
-					i.getUUID() == getUUID())
-					retour = true;
-			}
-			if(!retour)
-			{
-				Coordonnees tmp = new Coordonnees();
-		        tmp.setAdresse(getAdresse());
-		        tmp.setLatitude(getLatitude());
-		        tmp.setLongitude(getLongitude());
-		        tmp.setUUID(getUUID());
-		        cp.store(tmp);
+		        cp.store(getCoords());
 		        cp.db().commit();
 			}
 	        cp.close();
