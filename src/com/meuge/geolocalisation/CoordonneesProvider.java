@@ -1,6 +1,7 @@
 package com.meuge.geolocalisation;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.db4o.ObjectSet;
@@ -20,12 +21,20 @@ public class CoordonneesProvider extends DbProvider<Coordonnees> {
 	
 	public List<Coordonnees> findByLatLong (Coordonnees coord)
 	{
-		Query query = getQuery();
-		Constraint lonT = query.descend("longitude").constrain(coord.getLongitude());
-		query.descend("latitude").constrain(coord.getLatitude()).and(lonT);
-		query.descend("id").orderAscending();
-		ObjectSet<Coordonnees> resultat = query.execute();
-		return findMax(resultat,1);
+		List<Coordonnees> retour = null;
+		try {
+			ObjectSet<Coordonnees> resultat ;
+			Query query = getQuery();
+			Constraint lonT = query.descend("longitude").constrain(coord.getLongitude());
+			query.descend("latitude").constrain(coord.getLatitude()).and(lonT);
+			query.descend("id").orderDescending();
+			resultat = query.execute();
+			retour = findMax(resultat,1);
+		} catch (NullPointerException e) {
+			//Base vide
+			 retour = new ArrayList<Coordonnees>();
+		}
+		return retour;
 	}
 
 	/**
@@ -41,9 +50,16 @@ public class CoordonneesProvider extends DbProvider<Coordonnees> {
 	// Retourne les n derniers coordonnées
 	public List<Coordonnees> findAllLastMax (int limit)
 	{
-		Query query = getQuery();
-		query.descend("id").orderDescending();
-		ObjectSet<Coordonnees> resultat = query.execute();
-		return findMax(resultat,limit);
+		List<Coordonnees> retour = null;
+		try {
+			Query query = getQuery();
+			query.descend("id").orderDescending();
+			ObjectSet<Coordonnees> resultat = query.execute();
+			retour = findMax(resultat,1);
+		} catch (NullPointerException e) {
+			//Base vide
+			retour = findAllMax(limit);
+		}
+		return retour;
 	}
 }
