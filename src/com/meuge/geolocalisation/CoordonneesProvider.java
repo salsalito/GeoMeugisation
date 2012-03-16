@@ -16,7 +16,7 @@ public class CoordonneesProvider extends DbProvider<Coordonnees> {
 		db();
 		// TODO Auto-generated constructor stub
 	}
-
+    //Trouve les coordonnées selon la latitude et la longitude
 	public List<Coordonnees> findByLatLong (Coordonnees coord)
 	{
 		List<Coordonnees> retour = new ArrayList<Coordonnees>();
