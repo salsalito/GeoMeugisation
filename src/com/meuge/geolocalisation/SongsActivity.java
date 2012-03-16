@@ -19,7 +19,7 @@ public class SongsActivity extends Activity {
     {
     	String resultat = "";
     	CoordonneesProvider cp = new CoordonneesProvider(Coordonnees.class, this);
-		List<Coordonnees> tmp = cp.findAllMax(-1);
+		List<Coordonnees> tmp = cp.findAllLastMax(5);
 		for (Coordonnees i : tmp)
 		{
 			resultat += i.getLatitude() + " " + i.getLongitude() + " => "+ i.getAdresse()+"\n";

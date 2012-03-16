@@ -20,12 +20,30 @@ public class CoordonneesProvider extends DbProvider<Coordonnees> {
 	
 	public List<Coordonnees> findByLatLong (Coordonnees coord)
 	{
-		Query query = db().query();
-		query.constrain(coord.getClass());
+		Query query = getQuery();
 		Constraint lonT = query.descend("longitude").constrain(coord.getLongitude());
 		query.descend("latitude").constrain(coord.getLatitude()).and(lonT);
-		query.orderDescending();
+		query.descend("id").orderAscending();
 		ObjectSet<Coordonnees> resultat = query.execute();
 		return findMax(resultat,1);
+	}
+
+	/**
+	 * @param coord
+	 * @return
+	 */
+	private Query getQuery() {
+		Query query = db().query();
+		query.constrain(Coordonnees.class);
+		return query;
+	}
+	
+	// Retourne les n derniers coordonnées
+	public List<Coordonnees> findAllLastMax (int limit)
+	{
+		Query query = getQuery();
+		query.descend("id").orderDescending();
+		ObjectSet<Coordonnees> resultat = query.execute();
+		return findMax(resultat,limit);
 	}
 }
