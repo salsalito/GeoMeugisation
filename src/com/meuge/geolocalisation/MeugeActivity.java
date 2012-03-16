@@ -184,10 +184,9 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		if (!(getLatitude()==(double) 0L && getLongitude()==(double) 0L))
 		{
 			CoordonneesProvider cp = new CoordonneesProvider(Coordonnees.class, this);
-			//Coordonnees dans la base
-			List <Coordonnees> isInDB = cp.findByLatLong(getCoords());
-			
-			if(isInDB.size()==0)
+			//Coordonnee dans la base
+			Coordonnees coordonnee = cp.findByLatLong(getCoords());
+			if(coordonnee != null)
 			{
 		        cp.store(getCoords());
 		        cp.db().commit();

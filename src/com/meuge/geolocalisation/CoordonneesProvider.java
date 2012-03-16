@@ -1,7 +1,5 @@
 package com.meuge.geolocalisation;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import com.db4o.ObjectSet;
 import com.db4o.query.Constraint;
@@ -16,18 +14,18 @@ public class CoordonneesProvider extends DbProvider<Coordonnees> {
 		db();
 		// TODO Auto-generated constructor stub
 	}
-    //Trouve les coordonnées selon la latitude et la longitude
-	public List<Coordonnees> findByLatLong (Coordonnees coord)
+    //Trouve la dernière coordonnée selon la latitude et la longitude
+	public Coordonnees findByLatLong (Coordonnees coord)
 	{
-		List<Coordonnees> retour = new ArrayList<Coordonnees>();
 		Query query = db().query();
 		query.constrain(coord.getClass());
 		Constraint lonT = query.descend("longitude").constrain(coord.getLongitude());
 		query.descend("latitude").constrain(coord.getLatitude()).and(lonT);
 		ObjectSet<Coordonnees> resultat = query.execute();
+		Coordonnees coordonnee = null;
 		while(resultat.hasNext()) {
-			retour.add(resultat.next());
+			coordonnee = resultat.next();
 			}
-		return retour;
+		return coordonnee;
 	}
 }
