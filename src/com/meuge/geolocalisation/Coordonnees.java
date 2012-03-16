@@ -2,10 +2,6 @@ package com.meuge.geolocalisation;
 
 import java.io.Serializable;
 
-import org.apache.http.entity.SerializableEntity;
-
-import android.content.Context;
-import java.io.Serializable;
 //Classe pour recuperer nos donnees pour rentrer dans la base
 public class Coordonnees implements  Serializable {
 	private static final long serialVersionUID = 1L;

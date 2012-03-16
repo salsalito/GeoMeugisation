@@ -1,6 +1,7 @@
 package com.meuge.geolocalisation;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -22,7 +23,39 @@ public class DbProvider<T extends Serializable> extends Db4oHelper {
          db().delete( obj );
     }
 
-    public List<T> findAll() {
-        return db().query( persistentClass );
+    public List<T> findAllMax(int limit) {
+    	List<T> listToPage = db().query( persistentClass );
+    	return Paging(listToPage, 0, limit);
+    }
+
+    public List<T> findMax(List<T> objs, int limit)
+    {
+    	return Paging(objs, 0, limit);
+    }
+    
+    private  List<T> Paging(List<T> listToPage, int start, int limit)
+    {
+    	List<T> list = new ArrayList<T>();
+    	limit = limit < 0 ? listToPage.size() : limit;
+        if (start < listToPage.size())
+        {
+	        int end = calculFin(listToPage, start, limit);
+	        for (int i = start; i < end; i++)
+	        {
+	            list.add(listToPage.get(i));
+	        }
+        }
+        return list;
+    }
+    
+    
+    private int calculFin(List<T> resultList, int start, int limit)
+    {
+        int end = start + limit;
+        if (end >= resultList.size())
+        {
+            return resultList.size();
+        }
+        return end;
     }
 }

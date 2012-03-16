@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.db4o.ObjectContainer;
 import com.db4o.ObjectSet;
-
+@SuppressWarnings("rawtypes")
 public class AutoIncrement {
 	private PersistedAutoIncrements state = null;
     private final ObjectContainer container;
@@ -51,7 +51,8 @@ public class AutoIncrement {
 
     // #example: persistent auto increment
     private static class PersistedAutoIncrements {
-	    private final Map<Class, Integer> currentHighestIds = new HashMap<Class, Integer>();
+	    
+		private final Map<Class, Integer> currentHighestIds = new HashMap<Class, Integer>();
 
         public int nextNumber(Class forClass) {
             Integer number = currentHighestIds.get(forClass);
