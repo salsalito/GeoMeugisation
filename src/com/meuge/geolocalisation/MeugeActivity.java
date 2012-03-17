@@ -176,6 +176,8 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		retour.setLatitude(getLatitude());
 		retour.setLongitude(getLongitude());
 		retour.setUUID(getUUID());
+		retour.setPositions(CalculLatLong.calculate(getLatitude(), getLongitude()));
+		
 		return retour;
 	}
 	//Sauvegarde en base
