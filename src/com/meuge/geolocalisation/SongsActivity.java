@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 
@@ -42,15 +44,36 @@ public class SongsActivity extends Activity {
 	    }
 	    return false;
 	}
-	
+	private double formula(CalculLatLong coordsCalculate, CalculLatLong toCoord)
+	{
+		return (coordsCalculate.getCOSLAT() * toCoord.getCOSLAT()
+				*(toCoord.getCOSLNG() * coordsCalculate.getCOSLNG()
+			    +toCoord.getSINLNG() * coordsCalculate.getSINLNG()
+			    )+coordsCalculate.getSINLAT() * toCoord.getSINLAT());
+	}
 	private void ecritureTexte()
     {
+		double[] arrayInfos=new double[2];
+		arrayInfos[0] = (double) 48.858219;
+		arrayInfos[1] = (double) 2.294498;
+		//Coordonnees tour eiffel
+		// Recuperation des informations passées par les onglets
+        Bundle extras = getParent().getIntent().getExtras();
+        if (extras !=null)
+        	arrayInfos = (double []) extras.getDoubleArray("GPSINFO");
+        
+        Coordonnees coordonnesPassees = new Coordonnees();
+        coordonnesPassees.setLatitude(arrayInfos[0]);
+        coordonnesPassees.setLongitude(arrayInfos[1]);
+        coordonnesPassees.setPositions(CalculLatLong.calculate(coordonnesPassees.getLatitude(), coordonnesPassees.getLongitude()));
     	String resultat = "";
+    	NumberFormat formatter = new DecimalFormat("#,###");
     	CoordonneesProvider cp = new CoordonneesProvider(Coordonnees.class, this);
 		List<Coordonnees> tmp = cp.findAllLastMax(5);
 		for (Coordonnees i : tmp)
 		{
-			resultat += i.getLatitude() + " " + i.getLongitude() + " => "+ i.getAdresse()+"\n";
+			double tempFormula = Math.acos(formula(coordonnesPassees.getPositions(), i.getPositions())) * (double)6371;
+			resultat +=  formatter.format(tempFormula) + " Km => "+ i.getAdresse()+"\n";
 		}
 		cp.close();
 		cp.db().close();

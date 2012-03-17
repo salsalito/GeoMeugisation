@@ -11,6 +11,7 @@ public class Coordonnees implements  Serializable {
 	private double latitude;
 	private double longitude;
 	private String UUID;
+	private CalculLatLong positions;
 	public long getId() {
 		return id;
 	}
@@ -50,4 +51,20 @@ public class Coordonnees implements  Serializable {
 	public void setUUID(String uuid) {
 		this.UUID = uuid;
 	}
+
+	/**
+	 * @return the positions
+	 */
+	public CalculLatLong getPositions() {
+		return positions;
+	}
+
+	/**
+	 * @param positions the positions to set
+	 */
+	public void setPositions(CalculLatLong calculate) {
+		this.positions = calculate;
+		
+	}
+
 	}
