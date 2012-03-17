@@ -16,7 +16,7 @@
 
         <requestFocus />
     </TextView>
-    
+   	
 </LinearLayout>
 	<HorizontalScrollView
     	android:id="@+id/bottomBar"
@@ -33,4 +33,15 @@
         		android:id="@+id/bottomMenu">
     	</RadioGroup>
 	</HorizontalScrollView>
+
+	<ImageView
+	    android:id="@+id/imageview"
+	    android:layout_width="fill_parent"
+	    android:layout_height="150dip"
+	    android:layout_alignBottom="@+id/contentViewLayout"
+	    android:layout_alignParentLeft="true"
+	    android:layout_marginBottom="80dp"
+	    android:layout_weight="0.2"
+	    android:src="@drawable/ic_launcher" />
+
 </RelativeLayout>

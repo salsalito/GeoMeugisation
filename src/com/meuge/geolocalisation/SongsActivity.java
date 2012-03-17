@@ -7,10 +7,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
@@ -23,12 +25,24 @@ public class SongsActivity extends Activity {
         setContentView(R.layout.songs_layout);   
         ecritureTexte();
         ImageView monImage = (ImageView)findViewById(R.id.imageview);
-        Bitmap imageLoaded = chargeImage("http://www.google.fr/intl/en_com/images/srpr/logo1w.png");
-        if (imageLoaded != null)
-        	monImage.setImageBitmap(imageLoaded);
+        if (isNetworkAvailable()) {
+        	Bitmap imageLoaded = chargeImage("http://www.google.fr/intl/en_com/images/srpr/logo1w.png");
+        	if (imageLoaded != null)
+        		monImage.setImageBitmap(imageLoaded);
+        }
     }
 
-    private void ecritureTexte()
+    
+	public boolean isNetworkAvailable() {
+	    ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+	    NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+	    if (networkInfo != null && networkInfo.isConnected()) {
+	        return true;
+	    }
+	    return false;
+	}
+	
+	private void ecritureTexte()
     {
     	String resultat = "";
     	CoordonneesProvider cp = new CoordonneesProvider(Coordonnees.class, this);
