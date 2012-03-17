@@ -55,6 +55,9 @@ public class Db4oHelper {
            configuration.common().objectClass(Coordonnees.class).objectField("id").indexed(true);
            configuration.common().objectClass(Coordonnees.class).cascadeOnUpdate(true);
            configuration.common().objectClass(Coordonnees.class).cascadeOnActivate(true);
+           configuration.common().objectClass(CoordonneesPOI.class).objectField("id").indexed(true);
+           configuration.common().objectClass(CoordonneesPOI.class).cascadeOnUpdate(true);
+           configuration.common().objectClass(CoordonneesPOI.class).cascadeOnActivate(true);
            return configuration;
     }
     //Cree un auto ID incremental
@@ -68,6 +71,10 @@ public class Db4oHelper {
                 if(objectArgs.object() instanceof Coordonnees){
                 	Coordonnees coords = (Coordonnees) objectArgs.object();
                 	coords.setId(increment.getNextID(coords.getClass()));
+                }
+                if(objectArgs.object() instanceof CoordonneesPOI){
+                	CoordonneesPOI coordsPoi = (CoordonneesPOI) objectArgs.object();
+                	coordsPoi.setId(increment.getNextID(coordsPoi.getClass()));
                 }
             }
         });
