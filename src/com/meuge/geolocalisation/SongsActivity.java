@@ -85,10 +85,14 @@ public class SongsActivity extends Activity {
 			cp.close();
 			cp.db().close();
 			NumberFormat formatter = new DecimalFormat("#,###");
-			KmsCalcules [] meskms = (KmsCalcules[]) monTri.toArray();
-			for (int i = 0; i < 5; i++)
+			Iterator<KmsCalcules> meskmsTries = monTri.iterator();
+			for (int i =0 ; i < 5; i++)
 			{
-				resultat +=  formatter.format(meskms[i].getNbKms()) + " Km => "+ meskms[i].getInformations()+"\n";
+				if (meskmsTries.hasNext())
+				{
+					KmsCalcules meskms = (KmsCalcules) meskmsTries.next();
+					resultat +=  formatter.format(meskms.getNbKms()) + " Km => "+ meskms.getInformations()+"\n";
+				}
 			}
 	    	((TextView)findViewById(R.id.monChamp)).setText(resultat);
 	        }
