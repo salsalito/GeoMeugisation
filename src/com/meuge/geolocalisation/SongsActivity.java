@@ -7,7 +7,13 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.TreeSet;
+
+import com.db4o.foundation.Collection4;
 
 
 import android.app.Activity;
@@ -53,32 +59,39 @@ public class SongsActivity extends Activity {
 	}
 	private void ecritureTexte()
     {
-		double[] arrayInfos=new double[2];
-		arrayInfos[0] = (double) 48.858219;
-		arrayInfos[1] = (double) 2.294498;
+//		arrayInfos[0] = (double) 48.858219;
+//		arrayInfos[1] = (double) 2.294498;
 		//Coordonnees tour eiffel
 		// Recuperation des informations passées par les onglets
         Bundle extras = getParent().getIntent().getExtras();
         if (extras !=null)
+        {
+        	double[] arrayInfos=new double[2];
         	arrayInfos = (double []) extras.getDoubleArray("GPSINFO");
-        
-        Coordonnees coordonnesPassees = new Coordonnees();
-        coordonnesPassees.setLatitude(arrayInfos[0]);
-        coordonnesPassees.setLongitude(arrayInfos[1]);
-        coordonnesPassees.setPositions(CalculLatLong.calculate(coordonnesPassees.getLatitude(), coordonnesPassees.getLongitude()));
-    	String resultat = "";
-    	NumberFormat formatter = new DecimalFormat("#,###");
-    	CoordonneesProvider cp = new CoordonneesProvider(Coordonnees.class, this);
-		List<Coordonnees> tmp = cp.findAllLastMax(5);
-		for (Coordonnees i : tmp)
-		{
-			double tempFormula = Math.acos(formula(coordonnesPassees.getPositions(), i.getPositions())) * (double)6371;
-			resultat +=  formatter.format(tempFormula) + " Km => "+ i.getAdresse()+"\n";
-		}
-		cp.close();
-		cp.db().close();
-    	((TextView)findViewById(R.id.monChamp)).setText(resultat);
-    	
+	        Coordonnees coordonnesPassees = new Coordonnees();
+	        coordonnesPassees.setLatitude(arrayInfos[0]);
+	        coordonnesPassees.setLongitude(arrayInfos[1]);
+	        coordonnesPassees.setPositions(CalculLatLong.calculate(coordonnesPassees.getLatitude(), coordonnesPassees.getLongitude()));
+	    	String resultat = "";
+	    	CoordonneesPOIProvider cp = new CoordonneesPOIProvider(CoordonneesPOI.class, this);
+			List<CoordonneesPOI> tmp = cp.findAllLastMax(-1);
+			TreeSet<KmsCalcules> monTri = new TreeSet<KmsCalcules>(new CollectionComparator());
+			for (CoordonneesPOI i : tmp)
+			{
+				double tempFormula = Math.acos(formula(coordonnesPassees.getPositions(), i.getPositions())) * (double)6371;
+				KmsCalcules tmpKms = new KmsCalcules(tempFormula, i.getCategorie());
+				monTri.add(tmpKms);
+			}
+			cp.close();
+			cp.db().close();
+			NumberFormat formatter = new DecimalFormat("#,###");
+			KmsCalcules [] meskms = (KmsCalcules[]) monTri.toArray();
+			for (int i = 0; i < 5; i++)
+			{
+				resultat +=  formatter.format(meskms[i].getNbKms()) + " Km => "+ meskms[i].getInformations()+"\n";
+			}
+	    	((TextView)findViewById(R.id.monChamp)).setText(resultat);
+	        }
     }
     private Bitmap chargeImage(String myURL)
     {

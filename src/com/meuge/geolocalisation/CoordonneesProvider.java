@@ -48,14 +48,14 @@ public class CoordonneesProvider extends DbProvider<Coordonnees> {
 	}
 	
 	// Retourne les n derniers coordonnées
-	public List<Coordonnees> findAllLastMax (int limit)
+	public List<Coordonnees> findAllLastMax(int limit)
 	{
 		List<Coordonnees> retour = null;
 		try {
 			Query query = getQuery();
 			query.descend("id").orderDescending();
 			ObjectSet<Coordonnees> resultat = query.execute();
-			retour = findMax(resultat,1);
+			retour = findMax(resultat,limit);
 		} catch (NullPointerException e) {
 			//Base vide
 			retour = findAllMax(limit);

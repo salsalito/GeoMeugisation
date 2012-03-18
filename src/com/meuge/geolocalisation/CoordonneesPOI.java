@@ -13,6 +13,8 @@ public class CoordonneesPOI implements  Serializable {
 	private String UUID;
 	private String type;
 	private String categorie;
+	private CalculLatLong positions;
+
 	public long getId() {
 		return id;
 	}
@@ -66,4 +68,20 @@ public class CoordonneesPOI implements  Serializable {
 	public void setCategorie(String categorie) {
 		this.categorie = categorie;
 	}
+
+	/**
+	 * @return the positions
+	 */
+	public CalculLatLong getPositions() {
+		return positions;
 	}
+
+	/**
+	 * @param positions the positions to set
+	 */
+	public void setPositions(CalculLatLong calculate) {
+		this.positions = calculate;
+		
+	}
+
+}

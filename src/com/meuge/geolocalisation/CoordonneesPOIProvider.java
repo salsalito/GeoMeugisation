@@ -11,9 +11,10 @@ import com.db4o.query.Query;
 import android.content.Context;
 
 public class CoordonneesPOIProvider extends DbProvider<CoordonneesPOI> {
-
+	private Context contextCreated;
 	public CoordonneesPOIProvider(Class<CoordonneesPOI> persistentClass, Context ctx) {
 		super(persistentClass, ctx);
+		this.contextCreated = ctx;
 		db();
 		// TODO Auto-generated constructor stub
 	}
@@ -55,27 +56,14 @@ public class CoordonneesPOIProvider extends DbProvider<CoordonneesPOI> {
 			Query query = getQuery();
 			query.descend("id").orderDescending();
 			ObjectSet<CoordonneesPOI> resultat = query.execute();
-			retour = findMax(resultat,1);
+			retour = findMax(resultat,limit);
 		} catch (NullPointerException e) {
 			//Base vide
 			retour = findAllMax(limit);
+			if (retour.size()==0)
+				Magasins_But.Magasins_But(contextCreated);
 		}
 		return retour;
 	}
 	
-	
-	
-	// Retourne les n derniers coordonnées
-		public long getNbLignes ()
-		{
-			long retour = -1;
-			try {
-				Query query = getQuery();
-				retour= query.execute().size();
-			} catch (NullPointerException e) {
-				//Problème ou vide
-				retour = -1;
-			}
-			return retour;
-		}
 }
