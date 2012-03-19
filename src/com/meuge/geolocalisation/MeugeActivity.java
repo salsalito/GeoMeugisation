@@ -163,6 +163,8 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		arrayInfos[0] = getLatitude();
 		arrayInfos[1] = getLongitude();
 		bundle.putDoubleArray("GPSINFO", arrayInfos);
+		bundle.putDouble("LATITUDEINFO", getLatitude());
+		bundle.putDouble("LONGITUDEINFO", getLongitude());
 		bundle.putString("ADRESSEINFO", getAdresse());
 		myIntent.putExtras(bundle);
 		

@@ -61,7 +61,10 @@ public class CoordonneesPOIProvider extends DbProvider<CoordonneesPOI> {
 			//Base vide
 			retour = findAllMax(limit);
 			if (retour.size()==0)
+			{
+//				LectureFichierPOI.LectureFichier(contextCreated.getDir("files", 0) + "/Magasins.asc",contextCreated);
 				Magasins_But.Magasins_But(contextCreated);
+			}
 		}
 		return retour;
 	}
