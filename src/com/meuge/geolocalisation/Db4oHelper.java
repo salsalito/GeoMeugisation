@@ -55,7 +55,9 @@ public class Db4oHelper {
            configuration.common().objectClass(Coordonnees.class).objectField("id").indexed(true);
            configuration.common().objectClass(Coordonnees.class).cascadeOnUpdate(true);
            configuration.common().objectClass(Coordonnees.class).cascadeOnActivate(true);
-           configuration.common().objectClass(CoordonneesPOI.class).objectField("id").indexed(true);
+           configuration.common().objectClass(CoordonneesPOI.class).objectField("latitude").indexed(true);
+           configuration.common().objectClass(CoordonneesPOI.class).objectField("longitude").indexed(true);
+           //configuration.common().objectClass(CoordonneesPOI.class).objectField("id").indexed(true);
            configuration.common().objectClass(CoordonneesPOI.class).cascadeOnUpdate(true);
            configuration.common().objectClass(CoordonneesPOI.class).cascadeOnActivate(true);
            return configuration;

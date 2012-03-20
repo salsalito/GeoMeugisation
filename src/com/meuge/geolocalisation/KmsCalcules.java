@@ -3,14 +3,24 @@ package com.meuge.geolocalisation;
 public class KmsCalcules implements Comparable {
 	private double nbKms;
 	private String informations;
+	private String categorie;
 	
+	public String getCategorie() {
+		return categorie;
+	}
+
+	public void setCategorie(String categorie) {
+		this.categorie = categorie;
+	}
+
 	public final double getNbKms() {
 		return nbKms;
 	}
 	
-	public KmsCalcules(double nbKms, String informations) {
+	public KmsCalcules(double nbKms, String categorie, String informations) {
 		super();
 		this.nbKms = nbKms;
+		this.categorie = categorie;
 		this.informations = informations;
 	}
 	

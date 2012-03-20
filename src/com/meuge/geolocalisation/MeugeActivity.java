@@ -120,12 +120,13 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
     }  
     //Affiche la toolbox fdu GPS et ensuite realise l'action associee
 	private void createGpsDisabledAlert(){  
+		BundleTools.storeGPSStatus(true);
     AlertDialog.Builder builder = new AlertDialog.Builder(this);  
     builder.setMessage("Votre GPS est eteint! Voulez vous l'allumer ?")  
          .setCancelable(false)  
          .setPositiveButton("GPS OK",  
               new DialogInterface.OnClickListener(){  
-              public void onClick(DialogInterface dialog, int id){  
+              public void onClick(DialogInterface dialog, int id){ 
                    showGpsOptions();
               }  
          });  
@@ -157,17 +158,11 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 	
 	//Sauvegarde 
 	private void saveCoordonnees() {
-		final Bundle bundle = new Bundle();
 		Intent myIntent = getParent().getIntent();
-		double []arrayInfos = new double[2];
-		arrayInfos[0] = getLatitude();
-		arrayInfos[1] = getLongitude();
-		bundle.putDoubleArray("GPSINFO", arrayInfos);
-		bundle.putDouble("LATITUDEINFO", getLatitude());
-		bundle.putDouble("LONGITUDEINFO", getLongitude());
-		bundle.putString("ADRESSEINFO", getAdresse());
-		myIntent.putExtras(bundle);
-		
+		BundleTools.storeLatitude(getLatitude());
+		BundleTools.storeLongitude(getLongitude());
+		BundleTools.storeAdresse(getAdresse());
+		BundleTools.commitExtras(myIntent);
 		setIntent(myIntent);
 	}
 	//Fais un bean
@@ -179,7 +174,6 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		retour.setLongitude(getLongitude());
 		retour.setUUID(getUUID());
 		retour.setPositions(CalculLatLong.calculate(getLatitude(), getLongitude()));
-		
 		return retour;
 	}
 	//Sauvegarde en base
@@ -233,7 +227,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 	 */
 	private void choisirSaSource() {
 		reinitialisationEcran();
-	    if (!lManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){  
+	    if (!lManager.isProviderEnabled(LocationManager.GPS_PROVIDER) &&  !BundleTools.GPSStatus()){  
 	          createGpsDisabledAlert();  
 	    }
 	    else choisirSource();

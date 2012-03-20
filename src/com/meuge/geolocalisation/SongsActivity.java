@@ -63,39 +63,40 @@ public class SongsActivity extends Activity {
 //		arrayInfos[1] = (double) 2.294498;
 		//Coordonnees tour eiffel
 		// Recuperation des informations passées par les onglets
-        Bundle extras = getParent().getIntent().getExtras();
-        if (extras !=null)
+		
+		String resultat = "Aucune position définie !!!";
+   //     Bundle extras = getParent().getIntent().getExtras();
+        if (BundleTools.getLatitude() !=(double)0 && BundleTools.getLongitude() != (double) 0)
         {
-        	double[] arrayInfos=new double[2];
-        	arrayInfos = (double []) extras.getDoubleArray("GPSINFO");
+
 	        Coordonnees coordonnesPassees = new Coordonnees();
-	        coordonnesPassees.setLatitude(arrayInfos[0]);
-	        coordonnesPassees.setLongitude(arrayInfos[1]);
+	        coordonnesPassees.setLatitude(BundleTools.getLatitude());
+	        coordonnesPassees.setLongitude(BundleTools.getLongitude());
 	        coordonnesPassees.setPositions(CalculLatLong.calculate(coordonnesPassees.getLatitude(), coordonnesPassees.getLongitude()));
-	    	String resultat = "";
 	    	CoordonneesPOIProvider cp = new CoordonneesPOIProvider(CoordonneesPOI.class, this);
 			List<CoordonneesPOI> tmp = cp.findAllLastMax(-1);
 			TreeSet<KmsCalcules> monTri = new TreeSet<KmsCalcules>(new CollectionComparator());
 			for (CoordonneesPOI i : tmp)
 			{
 				double tempFormula = Math.acos(formula(coordonnesPassees.getPositions(), i.getPositions())) * (double)6371;
-				KmsCalcules tmpKms = new KmsCalcules(tempFormula, i.getCategorie());
+				KmsCalcules tmpKms = new KmsCalcules(tempFormula, i.getCategorie(), i.getAdresse());
 				monTri.add(tmpKms);
 			}
 			cp.close();
 			cp.db().close();
 			NumberFormat formatter = new DecimalFormat("#,###");
 			Iterator<KmsCalcules> meskmsTries = monTri.iterator();
-			for (int i =0 ; i < 5; i++)
+			resultat = "";
+			for (int i =0 ; i < 7; i++)
 			{
 				if (meskmsTries.hasNext())
 				{
 					KmsCalcules meskms = (KmsCalcules) meskmsTries.next();
-					resultat +=  formatter.format(meskms.getNbKms()) + " Km => "+ meskms.getInformations()+"\n";
+					resultat +=  formatter.format(meskms.getNbKms()) + " Km => "+ meskms.getCategorie()+ " : "+meskms.getInformations()+"\n";
 				}
 			}
-	    	((TextView)findViewById(R.id.monChamp)).setText(resultat);
-	        }
+	    }
+        ((TextView)findViewById(R.id.monChamp)).setText(resultat);
     }
     private Bitmap chargeImage(String myURL)
     {

@@ -3,12 +3,15 @@ package com.meuge.geolocalisation;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.Context;
+import android.util.Log;
 
 public class LectureFichierPOI {
 	
@@ -20,15 +23,13 @@ public class LectureFichierPOI {
 		} 
 		return false; 
 	}
-	public static void LectureFichier (String fichier, Context ctx)
+	public static void LectureFichier (InputStream fichier, String nomFichier, Context ctx)
 	{
 	    try{
 	    	 String separator = ",";
-	    	  // Ouverture fichier 
-	    	  FileInputStream fstream = new FileInputStream(fichier);
-	    	  // Retourne l'objet du DataInputStream
-	    	  DataInputStream in = new DataInputStream(fstream);
-	    	  BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			 CoordonneesPOIProvider cp = new CoordonneesPOIProvider(CoordonneesPOI.class, ctx);	
+	    	  BufferedReader br = new BufferedReader(new InputStreamReader(fichier));
+	    	  
 	    	  String strLine = br.readLine();
 	    	  int compteur = 0;
 	    	  //File Ligne Par Ligne
@@ -40,8 +41,8 @@ public class LectureFichierPOI {
 	    			  StringTokenizer temp = new StringTokenizer(strLine,separator);
 		              if (temp.countTokens()==3)
 		              {
-		            	  String latitude = ((String) temp.nextElement()).trim();
 		            	  String longitude = ((String) temp.nextElement()).trim();
+		            	  String latitude = ((String) temp.nextElement()).trim();
 		            	  String infos = ((String) temp.nextElement()).trim();
 		            	  String  magasin = "";
 		            	  if (infos.startsWith("\"") && infos.endsWith("\""))
@@ -52,17 +53,35 @@ public class LectureFichierPOI {
 		            		  infos = infos.substring(infos.indexOf("]")+1).trim();
 		            	  }
 		            	  if (testNumber(latitude)  && testNumber(longitude))
-		            		  System.out.println (compteur+" : Magasin : "+magasin+" | Lat : " +latitude + "| Lon: " +longitude + "| Adresse : "+infos);
+		            		  cp.store(getCoordsPOI(Double.valueOf(latitude), Double.valueOf(longitude), magasin, infos, "Grands Magasins"));
 		            	  else 
-		            		  System.out.println (compteur+ " : Erreur ligne :" + strLine);
+		            		  Log.e("MAGASINS",compteur+ " : Erreur ligne :" + strLine);
 		              }
 	    		  }
 	              strLine = br.readLine();
 	    	  }
 	    	  //Fermeture
-	    	  in.close();
+	    	  fichier.close();
+	    	  if (compteur>0)
+	    	  {
+	    		  cp.db().commit();
+	    		  cp.db().close();
+	    	  }
 	    	}catch (Exception e){//Catch exception if any
-	    	   	System.err.println("Error: " + e.getMessage());
+	    		Log.e("MAGASINS"," Erreur Avec le fichier :" + nomFichier);
 	    	}
+		}
+	private static CoordonneesPOI getCoordsPOI(double latitude, double longitude,
+			String id_magasin, String adresse, String typePOI) {
+		
+		CoordonneesPOI retour = new CoordonneesPOI();
+		retour.setAdresse(adresse);
+		retour.setLatitude(latitude);
+		retour.setLongitude(longitude);
+		retour.setType(typePOI);
+		retour.setCategorie(id_magasin);
+		retour.setPositions(CalculLatLong.calculate(retour.getLatitude(), retour.getLongitude()));
+		return retour;
+		
 	}
 }

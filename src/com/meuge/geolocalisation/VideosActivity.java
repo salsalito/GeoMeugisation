@@ -57,17 +57,17 @@ public class VideosActivity extends MapActivity {
 
     }
 	private void afficheCarte() {
-		double[] arrayInfos;
+		//double[] arrayInfos;
 		// Recuperation des informations passées par les onglets
-        Bundle extras = getParent().getIntent().getExtras();
-        arrayInfos = (double []) extras.getDoubleArray("GPSINFO");
+//        Bundle extras = getParent().getIntent().getExtras();
+//        arrayInfos = (double []) extras.getDoubleArray("GPSINFO");
         //String adresse = (String) extras.getString("ADRESSEINFO");
         
         MapView mapView = (MapView) findViewById(R.id.mapView);
         MapController mc = mapView.getController();
         GeoPoint p = new GeoPoint(
-        		(int) (arrayInfos[0] * 1E6), 
-        		(int) (arrayInfos[1] * 1E6));
+        		(int) (BundleTools.getLatitude() * 1E6), 
+        		(int) (BundleTools.getLongitude() * 1E6));
         //Positionnement de nos coordonnées
         mc.animateTo(p);
         mc.setZoom(17);

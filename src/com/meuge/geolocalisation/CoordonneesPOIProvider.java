@@ -1,6 +1,9 @@
 package com.meuge.geolocalisation;
 
 
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,8 +65,8 @@ public class CoordonneesPOIProvider extends DbProvider<CoordonneesPOI> {
 			retour = findAllMax(limit);
 			if (retour.size()==0)
 			{
-//				LectureFichierPOI.LectureFichier(contextCreated.getDir("files", 0) + "/Magasins.asc",contextCreated);
-				Magasins_But.Magasins_But(contextCreated);
+				LectureFichierPOI.LectureFichier(contextCreated.getResources().openRawResource(R.raw.magasins),"Magasins.asc", contextCreated);
+				//Magasins_But.Magasins_But(contextCreated);
 			}
 		}
 		return retour;
