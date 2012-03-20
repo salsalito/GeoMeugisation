@@ -105,6 +105,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
  
 	//Réinitialisation de l'écran
 	private void reinitialisationEcran(){
+		BundleTools.storeGPSStatus(false);
 		((TextView)findViewById(R.id.latitude)).setText("0.0");
 		((TextView)findViewById(R.id.longitude)).setText("0.0");
 		((TextView)findViewById(R.id.altitude)).setText("0.0");
@@ -226,7 +227,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 	 * 
 	 */
 	private void choisirSaSource() {
-		reinitialisationEcran();
+		//reinitialisationEcran();
 	    if (!lManager.isProviderEnabled(LocationManager.GPS_PROVIDER) &&  !BundleTools.GPSStatus()){  
 	          createGpsDisabledAlert();  
 	    }
