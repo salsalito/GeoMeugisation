@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.util.Log;
+import android.util.Xml.Encoding;
 
 public class LectureFichierPOI {
 	
@@ -28,8 +29,8 @@ public class LectureFichierPOI {
 	    try{
 	    	 String separator = ",";
 			 CoordonneesPOIProvider cp = new CoordonneesPOIProvider(CoordonneesPOI.class, ctx);	
-	    	  BufferedReader br = new BufferedReader(new InputStreamReader(fichier));
-	    	  
+	    	  BufferedReader br = new BufferedReader(new InputStreamReader(fichier, "ISO-8859-1"));
+	    	 
 	    	  String strLine = br.readLine();
 	    	  int compteur = 0;
 	    	  //File Ligne Par Ligne

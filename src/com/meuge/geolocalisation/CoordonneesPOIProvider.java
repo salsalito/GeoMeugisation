@@ -63,11 +63,6 @@ public class CoordonneesPOIProvider extends DbProvider<CoordonneesPOI> {
 		} catch (NullPointerException e) {
 			//Base vide
 			retour = findAllMax(limit);
-			if (retour.size()==0)
-			{
-				LectureFichierPOI.LectureFichier(contextCreated.getResources().openRawResource(R.raw.magasins),"Magasins.asc", contextCreated);
-				//Magasins_But.Magasins_But(contextCreated);
-			}
 		}
 		return retour;
 	}

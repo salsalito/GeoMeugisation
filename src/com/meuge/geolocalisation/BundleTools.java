@@ -2,10 +2,13 @@ package com.meuge.geolocalisation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 public final class BundleTools {
@@ -14,15 +17,33 @@ public final class BundleTools {
 	    private static String LONGITUDEINFO = "LONGITUDEINFO";
 	    private static String ADRESSEINFO = "ADRESSEINFO";
 	    private static String GPS_ON_OFF ="GPSINFO";
+	    private static String DATABASE_CHARGE ="DATABASE_LOADED";
+
 	    
 		private static final class BundleToolsHolder {
 			static final Bundle singleton =  new Bundle();
+			static final Hashtable<String, ArrayList<CoordonneesPOI>> coordsFind =  new Hashtable<String, ArrayList<CoordonneesPOI>>();
 		}
 
 		public static Bundle getInstance() {
-		return BundleToolsHolder.singleton;
+			return BundleToolsHolder.singleton;
 		}
 		
+		private static Hashtable<String, ArrayList<CoordonneesPOI>> getCoords() {
+			return BundleToolsHolder.coordsFind;
+		}
+		
+		public static  boolean isDBaseLoaded()
+		{
+			Bundle bundle = getInstance();
+			return bundle.getBoolean(DATABASE_CHARGE);
+		}
+		
+		public static void loadedDB()
+		{
+			Bundle bundle = getInstance();
+			bundle.putBoolean(DATABASE_CHARGE, true);
+		}
 		public static void storeGPSStatus(boolean valeur)
 		{
 			Bundle bundle = getInstance();
@@ -75,4 +96,26 @@ public final class BundleTools {
 			intent.putExtras(BundleTools.getInstance());
 		}
 		
+		public static void reset() {
+			resetCoords();
+			Bundle bundle = getInstance();
+			bundle.clear();
+		}
+		
+		public static void storeCoords(ArrayList<CoordonneesPOI> coords)
+		{
+			getCoords().clear();
+			for (int i=0; i < coords.size(); i++)
+			{
+				CoordonneesPOI tmp = coords.get(i);
+				ArrayList<CoordonneesPOI> tableau = BundleToolsHolder.coordsFind.get(tmp.getCategorie());
+				tableau = tableau == null ? new ArrayList<CoordonneesPOI>() : tableau; 
+				tableau.add(tmp);
+				getCoords().put(tmp.getCategorie(), tableau);
+			}
+		}
+		
+		public static void resetCoords() {
+			getCoords().clear();
+		}
 }

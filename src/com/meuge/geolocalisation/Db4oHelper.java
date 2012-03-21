@@ -52,9 +52,6 @@ public class Db4oHelper {
 
     private EmbeddedConfiguration dbConfig() throws IOException {
            EmbeddedConfiguration configuration = Db4oEmbedded.newConfiguration();
-           configuration.common().objectClass(Coordonnees.class).objectField("id").indexed(true);
-           configuration.common().objectClass(Coordonnees.class).cascadeOnUpdate(true);
-           configuration.common().objectClass(Coordonnees.class).cascadeOnActivate(true);
            configuration.common().objectClass(CoordonneesPOI.class).objectField("latitude").indexed(true);
            configuration.common().objectClass(CoordonneesPOI.class).objectField("longitude").indexed(true);
            //configuration.common().objectClass(CoordonneesPOI.class).objectField("id").indexed(true);
@@ -70,10 +67,6 @@ public class Db4oHelper {
         eventRegistry.creating().addListener(new EventListener4<CancellableObjectEventArgs>() {
             public void onEvent(Event4<CancellableObjectEventArgs> event4,
                                 CancellableObjectEventArgs objectArgs) {
-                if(objectArgs.object() instanceof Coordonnees){
-                	Coordonnees coords = (Coordonnees) objectArgs.object();
-                	coords.setId(increment.getNextID(coords.getClass()));
-                }
                 if(objectArgs.object() instanceof CoordonneesPOI){
                 	CoordonneesPOI coordsPoi = (CoordonneesPOI) objectArgs.object();
                 	coordsPoi.setId(increment.getNextID(coordsPoi.getClass()));

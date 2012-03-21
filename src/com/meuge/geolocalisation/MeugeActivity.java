@@ -93,7 +93,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 			reinitialisationEcran();
 			break;
 		case R.id.save:
-			saveDBCoordonnees();
+			//saveDBCoordonnees();
 			break;
 		case R.id.world:
 			tacheDeFond();
@@ -167,9 +167,9 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		setIntent(myIntent);
 	}
 	//Fais un bean
-	private Coordonnees getCoords()
+	private CoordonneesPOI getCoords()
 	{
-		Coordonnees retour = new Coordonnees();
+		CoordonneesPOI retour = new CoordonneesPOI();
 		retour.setAdresse(getAdresse());
 		retour.setLatitude(getLatitude());
 		retour.setLongitude(getLongitude());
@@ -182,9 +182,9 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 	{
 		if (!(getLatitude()==(double) 0L && getLongitude()==(double) 0L))
 		{
-			CoordonneesProvider cp = new CoordonneesProvider(Coordonnees.class, this);
+			CoordonneesPOIProvider cp = new CoordonneesPOIProvider(CoordonneesPOI.class, this);
 			//Coordonnee dans la base
-			List<Coordonnees> coordonnee = cp.findByLatLong(getCoords());
+			List<CoordonneesPOI> coordonnee = cp.findByLatLong(getCoords());
 			if(coordonnee.size() == 0)
 			{
 		        cp.store(getCoords());

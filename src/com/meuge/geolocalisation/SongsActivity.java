@@ -69,10 +69,10 @@ public class SongsActivity extends Activity {
         if (BundleTools.getLatitude() !=(double)0 && BundleTools.getLongitude() != (double) 0)
         {
 
-	        Coordonnees coordonnesPassees = new Coordonnees();
+	        CoordonneesPOI coordonnesPassees = new CoordonneesPOI();
 	        coordonnesPassees.setLatitude(BundleTools.getLatitude());
 	        coordonnesPassees.setLongitude(BundleTools.getLongitude());
-	        coordonnesPassees.setPositions(CalculLatLong.calculate(coordonnesPassees.getLatitude(), coordonnesPassees.getLongitude()));
+	        coordonnesPassees.setPositions(CalculLatLong.calculate(BundleTools.getLatitude(), BundleTools.getLongitude()));
 	    	CoordonneesPOIProvider cp = new CoordonneesPOIProvider(CoordonneesPOI.class, this);
 			List<CoordonneesPOI> tmp = cp.findAllLastMax(-1);
 			TreeSet<KmsCalcules> monTri = new TreeSet<KmsCalcules>(new CollectionComparator());
