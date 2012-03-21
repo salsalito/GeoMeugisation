@@ -8,7 +8,10 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:layout_marginBottom="55dip" >
-
+<ExpandableListView android:id="@+id/android:list"
+               android:layout_width="fill_parent"
+               android:layout_height="fill_parent"/>
+    
     <TextView
         android:id="@+id/monChamp"
         android:layout_width="fill_parent"
@@ -18,22 +21,6 @@
     </TextView>
    	
 </LinearLayout>
-	<HorizontalScrollView
-    	android:id="@+id/bottomBar"
-    	android:scrollbarTrackHorizontal="@drawable/scrollbar_horizontal_track"
-    	android:scrollbarThumbHorizontal="@drawable/scrollbar_horizontal_thumb"
-    	android:scrollbarSize="2dip"
-    	android:layout_alignParentBottom="true" 
-    	android:layout_width="fill_parent"
-    	android:background="@drawable/bottom_bar" android:layout_height="55dip">
-    	<RadioGroup
-        		android:layout_width="fill_parent"
-        		android:layout_height="wrap_content"
-        		android:orientation="horizontal"
-        		android:id="@+id/bottomMenu">
-    	</RadioGroup>
-	</HorizontalScrollView>
-
 	<ImageView
 	    android:id="@+id/imageview"
 	    android:layout_width="fill_parent"
