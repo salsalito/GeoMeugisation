@@ -61,6 +61,7 @@ public class OngletsActivity extends TabActivity {
     		Toast.makeText(this,"Chargement de base Magasins",Toast.LENGTH_SHORT).show();
     		LectureFichierPOI.LectureFichier(getApplicationContext().getResources().openRawResource(R.raw.magasins),"Magasins.asc", this);
     		Log.i("DataBase", "Fin de chargement de base Magasins");
+    		BundleTools.loadedDB();
     		Toast.makeText(this,"Chargement de base Magasins finie",Toast.LENGTH_SHORT).show();
     		//Magasins_But.Magasins_But(contextCreated);
     	}
