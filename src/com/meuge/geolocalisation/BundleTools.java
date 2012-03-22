@@ -127,7 +127,7 @@ public final class BundleTools {
 		{   
 			
 			try {
-					InputStream inStream = ctx.getResources().openRawResource(R.raw.);
+					InputStream inStream = ctx.getResources().openRawResource(R.raw.poimeuge);
 		            byte[] buffer = new byte[inStream.available()];               
 		            inStream.read(buffer);               
 		            inStream.close();               
