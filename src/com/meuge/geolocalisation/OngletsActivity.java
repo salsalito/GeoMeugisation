@@ -54,7 +54,7 @@ public class OngletsActivity extends TabActivity {
     
     private void chargeBase()
     {
-    	if (!BundleTools.isDBaseLoaded())
+    	if (BundleTools.isDBaseLoaded() && 1==0)
     	{
     		Log.i("DataBase", "Chargement de base Magasins debutee");
     		//...on affiche un Toast pour le signaler à l'utilisateur

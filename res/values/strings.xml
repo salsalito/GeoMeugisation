@@ -12,4 +12,13 @@
     <drawable name="violet">#a020f0</drawable>
     <drawable name="gray">#778899</drawable>
     <drawable name="red">#C11B17</drawable>
+    <string name="deconnection">Deconnection</string>
+    <string name="login">Login :</string>
+ 	<string name="password">Password :</string>
+ 	<string name="password2">Retype Password :</string>
+ 	<string name="entretonprenom">SVP Entrez votre Login</string>
+ 	<string name="inscription">Inscription chez MEUGE</string>
+ 	<string name="inscript">Inscription</string>
+ 	<string name="bouton">Envoyer</string>
+ 	<string name="bouton_retour">Retour</string>
 </resources>

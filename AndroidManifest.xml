@@ -13,7 +13,7 @@
         android:label="@string/app_name" >
 		<uses-library android:name="com.google.android.maps" />
         <activity
-            android:name=".OngletsActivity"
+            android:name=".LoginActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,9 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+	    <activity android:name=".OngletsActivity" />
 	    <activity android:name=".MeugeActivity" />
 	    <activity android:name=".SongsActivity"/>
 	    <activity android:name=".VideosActivity"/>
+	    <activity android:name=".InscriptionActivity"></activity>
     </application>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" ></uses-permission>
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
