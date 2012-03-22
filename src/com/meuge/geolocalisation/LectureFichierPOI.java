@@ -1,18 +1,17 @@
 package com.meuge.geolocalisation;
 
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URL;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
-import android.util.Xml.Encoding;
 
 public class LectureFichierPOI {
 	
@@ -24,13 +23,14 @@ public class LectureFichierPOI {
 		} 
 		return false; 
 	}
-	public static void LectureFichier (InputStream fichier, String nomFichier, Context ctx)
+	public static void LectureFichier (InputStream fichier, String nomFichier, Context ctx, SharedPreferences sharedPrefs)
 	{
-	    try{
+		try{
+			saveDateChargement("Debut Chargement", sharedPrefs);
 	    	 String separator = ",";
 			 CoordonneesPOIProvider cp = new CoordonneesPOIProvider(CoordonneesPOI.class, ctx);	
 	    	  BufferedReader br = new BufferedReader(new InputStreamReader(fichier, "ISO-8859-1"));
-	    	 
+	    	  
 	    	  String strLine = br.readLine();
 	    	  int compteur = 0;
 	    	  //File Ligne Par Ligne
@@ -68,10 +68,30 @@ public class LectureFichierPOI {
 	    		  cp.db().commit();
 	    		  cp.db().close();
 	    	  }
+	    	  saveDateChargement("Fin Chargement", sharedPrefs);
+	    	  saveChargement(compteur, true,sharedPrefs);
 	    	}catch (Exception e){//Catch exception if any
 	    		Log.e("MAGASINS"," Erreur Avec le fichier :" + nomFichier);
 	    	}
 		}
+
+	 
+	private static void saveDateChargement(String key,SharedPreferences sharedPreferences)
+	{
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putString(key, DateFormat.getDateTimeInstance(
+	            DateFormat.SHORT, DateFormat.SHORT).format(new Date()).toString());
+        editor.commit();
+
+	}
+	private static void saveChargement(int elements, boolean value,SharedPreferences sharedPreferences)
+	{
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(BundleTools.NB_ELEMENTS, elements);
+		editor.putBoolean(BundleTools.DATABASE_CHARGE, value);
+        editor.commit();
+
+	}
 	private static CoordonneesPOI getCoordsPOI(double latitude, double longitude,
 			String id_magasin, String adresse, String typePOI) {
 		

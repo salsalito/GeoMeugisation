@@ -1,8 +1,10 @@
 package com.meuge.geolocalisation;
 
+import java.io.File;
 import java.io.IOException;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 import com.db4o.Db4oEmbedded;
@@ -34,7 +36,7 @@ public class Db4oHelper {
 
         try {
             if (oc == null || oc.ext().isClosed()) {
-              oc = Db4oEmbedded.openFile(dbConfig(), db4oDBFullPath(context));
+              oc = Db4oEmbedded.openFile(dbConfig(), db4oDBFullPathWithStorage(context));
               registerEventOnContainer(oc);
             }
             return oc;
@@ -86,9 +88,36 @@ public class Db4oHelper {
        */
 
        private String db4oDBFullPath(Context ctx) {
-                     return ctx.getDir("databases", 0) + "/" + "dbmeuge.db4o";
+    	   	String nomFile = ctx.getString(R.string.database_file_interne);
+    	   	return ctx.getDir("databases", 0) + "/" + nomFile;
        }
-
+       /**
+        * Chemin de la base de donnees
+        */
+       
+       private String db4oDBFullPathWithStorage(Context ctx) {
+       		String retourFile = db4oDBFullPath(ctx);
+    	   if (isExternalStorageAvailable())
+       		{
+    		   	String nomFile = ctx.getString(R.string.database_file_externe);
+       			File ext = new File (Environment.getExternalStorageDirectory().getAbsolutePath()+nomFile);
+       			retourFile = ext.exists() ? ext.getAbsolutePath() : db4oDBFullPath(ctx);
+       		}
+    	   return retourFile;
+       }
+		/*
+		 *  Base externe 
+		 */
+       public boolean isExternalStorageAvailable() {
+    	    boolean state = false;
+    	    String extStorageState = Environment.getExternalStorageState();
+    	    if (Environment.MEDIA_MOUNTED.equals(extStorageState) && 
+    	    	!Environment.MEDIA_MOUNTED_READ_ONLY.equals(extStorageState)) {
+    	        state = true;
+    	    }
+    	    return state;
+    	}
+       
        /**
        * Ferme la database
        */

@@ -54,19 +54,23 @@ public class OngletsActivity extends TabActivity {
     
     private void chargeBase()
     {
-    	if (BundleTools.isDBaseLoaded() && 1==0)
+    	if (!BundleTools.isDBaseLoaded(getPreferences(MODE_PRIVATE)))
     	{
-    		Log.i("DataBase", "Chargement de base Magasins debutee");
-    		//...on affiche un Toast pour le signaler à l'utilisateur
-    		Toast.makeText(this,"Chargement de base Magasins",Toast.LENGTH_SHORT).show();
-    		LectureFichierPOI.LectureFichier(getApplicationContext().getResources().openRawResource(R.raw.magasins),"Magasins.asc", this);
-    		Log.i("DataBase", "Fin de chargement de base Magasins");
-    		BundleTools.loadedDB();
-    		Toast.makeText(this,"Chargement de base Magasins finie",Toast.LENGTH_SHORT).show();
-    		//Magasins_But.Magasins_But(contextCreated);
+    		BundleTools.copyDataBase(this,getPreferences(MODE_PRIVATE));
+    		if (!BundleTools.isDBaseLoaded(getPreferences(MODE_PRIVATE)))
+    		{
+	    		Log.i("DataBase", "Chargement de base Magasins debutee");
+	    		//...on affiche un Toast pour le signaler à l'utilisateur
+	    		Toast.makeText(this,"Chargement de base Magasins",Toast.LENGTH_SHORT).show();
+	    		LectureFichierPOI.LectureFichier(getApplicationContext().getResources().openRawResource(R.raw.magasins),"Magasins.asc", this,getPreferences(MODE_PRIVATE));
+	    		Log.i("DataBase", "Fin de chargement de base Magasins");
+	    		Toast.makeText(this,"Chargement de base Magasins finie",Toast.LENGTH_SHORT).show();
+	    		//Magasins_But.Magasins_But(contextCreated);
+    		}
     	}
 
     }
+    
     @Override
 	protected void onResume() {
 		super.onResume();

@@ -1,5 +1,11 @@
 package com.meuge.geolocalisation;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -7,9 +13,11 @@ import java.util.List;
 import java.util.Map;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 public final class BundleTools {
 	     
@@ -17,8 +25,8 @@ public final class BundleTools {
 	    private static String LONGITUDEINFO = "LONGITUDEINFO";
 	    private static String ADRESSEINFO = "ADRESSEINFO";
 	    private static String GPS_ON_OFF ="GPSINFO";
-	    private static String DATABASE_CHARGE ="DATABASE_LOADED";
-
+	    public static String DATABASE_CHARGE ="DATABASE_LOADED";
+	    public static String NB_ELEMENTS ="NB_ELEMENTS";
 	    
 		private static final class BundleToolsHolder {
 			static final Bundle singleton =  new Bundle();
@@ -33,17 +41,13 @@ public final class BundleTools {
 			return BundleToolsHolder.coordsFind;
 		}
 		
-		public static  boolean isDBaseLoaded()
+		public static  boolean isDBaseLoaded(SharedPreferences sharedPref)
 		{
 			Bundle bundle = getInstance();
+			bundle.putBoolean(DATABASE_CHARGE,sharedPref.getBoolean(DATABASE_CHARGE, false));
 			return bundle.getBoolean(DATABASE_CHARGE);
 		}
-		
-		public static void loadedDB()
-		{
-			Bundle bundle = getInstance();
-			bundle.putBoolean(DATABASE_CHARGE, true);
-		}
+
 		public static void storeGPSStatus(boolean valeur)
 		{
 			Bundle bundle = getInstance();
@@ -118,4 +122,25 @@ public final class BundleTools {
 		public static void resetCoords() {
 			getCoords().clear();
 		}
+		
+		public static void copyDataBase(Context ctx, SharedPreferences sharedPreferences)
+		{   
+			
+			try {
+					InputStream inStream = ctx.getResources().openRawResource(R.raw.);
+		            byte[] buffer = new byte[inStream.available()];               
+		            inStream.read(buffer);               
+		            inStream.close();               
+		            FileOutputStream fos = new FileOutputStream(ctx.getDir("databases", 0) + "/" + ctx.getString(R.string.database_file_interne));     
+		            fos.write(buffer);               
+		            fos.close(); 
+	                SharedPreferences.Editor editor = sharedPreferences.edit();
+	        		editor.putBoolean(BundleTools.DATABASE_CHARGE, true);
+	                editor.commit();
+			} catch (FileNotFoundException e) {
+				Log.e("DATABASE", "Fichier non trouve");
+			} catch (IOException e) {
+				Log.e("DATABASE", "Fichier bizarre "+ctx.getString(R.string.database_file_interne)+" non trouve");
+			}               
+         }
 }
