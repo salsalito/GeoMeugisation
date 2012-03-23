@@ -135,8 +135,9 @@ public final class BundleTools {
 	            LogCatAppender logCat = new LogCatAppender();
 	            PatternFormatter patternFormatter=new PatternFormatter(); 
 	            patternFormatter.setPattern("%d{DATE} [%P] %m"); 
-	            appender.setFileName( "meuge.txt");
+	            appender.setFileName( "meuge2.txt");
 	            logCat.setFormatter(patternFormatter);
+	            appender.setAppend(true);
 	            appender.setFormatter(patternFormatter); 
 	            logger.addAppender(appender);	            
 	            logger.addAppender(logCat);	            
