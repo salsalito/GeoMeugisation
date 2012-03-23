@@ -112,7 +112,7 @@ public class SongsActivity extends ExpandableListActivity {
 	        coordonnesPassees.setLongitude(BundleTools.getLongitude());
 	        coordonnesPassees.setPositions(CalculLatLong.calculate(BundleTools.getLatitude(), BundleTools.getLongitude()));
 	    	CoordonneesPOIProvider cp = new CoordonneesPOIProvider(CoordonneesPOI.class, this);
-			List<CoordonneesPOI> tmp = cp.findAllLastMax(-1);
+			List<CoordonneesPOI> tmp = cp.findAllMax(cp.ALLRECORDS);
 			TreeSet<KmsCalcules> monTri = new TreeSet<KmsCalcules>(new CollectionComparator());
 			for (CoordonneesPOI i : tmp)
 			{

@@ -51,20 +51,4 @@ public class CoordonneesPOIProvider extends DbProvider<CoordonneesPOI> {
 		return query;
 	}
 	
-	// Retourne les n derniers coordonnées
-	public List<CoordonneesPOI> findAllLastMax (int limit)
-	{
-		List<CoordonneesPOI> retour = null;
-		try {
-			Query query = getQuery();
-			query.descend("id").orderDescending();
-			ObjectSet<CoordonneesPOI> resultat = query.execute();
-			retour = findMax(resultat,limit);
-		} catch (NullPointerException e) {
-			//Base vide
-			retour = findAllMax(limit);
-		}
-		return retour;
-	}
-	
 }

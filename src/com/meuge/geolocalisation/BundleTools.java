@@ -130,8 +130,8 @@ public final class BundleTools {
 					InputStream inStream = ctx.getResources().openRawResource(R.raw.poimeuge);
 		            byte[] buffer = new byte[inStream.available()];               
 		            inStream.read(buffer);               
-		            inStream.close();               
-		            FileOutputStream fos = new FileOutputStream(ctx.getDir("databases", 0) + "/" + ctx.getString(R.string.database_file_interne));     
+		            inStream.close();  
+		            FileOutputStream fos = new FileOutputStream(ctx.getDir("databases", 0) + "/" + ctx.getString(R.string.database_file_interne),false);     
 		            fos.write(buffer);               
 		            fos.close(); 
 	                SharedPreferences.Editor editor = sharedPreferences.edit();

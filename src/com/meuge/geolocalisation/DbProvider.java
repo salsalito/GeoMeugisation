@@ -9,6 +9,7 @@ import android.content.Context;
 
 public class DbProvider<T extends Serializable> extends Db4oHelper {
 	public Class<T> persistentClass;
+	public static int ALLRECORDS = -1;
 
     public DbProvider( Class<T> persistentClass, Context ctx ) {
         super( ctx );
@@ -25,7 +26,8 @@ public class DbProvider<T extends Serializable> extends Db4oHelper {
 
     public List<T> findAllMax(int limit) {
     	List<T> listToPage = db().query( persistentClass );
-    	return Paging(listToPage, 0, limit);
+    	listToPage =  (limit ==ALLRECORDS) ?  listToPage : Paging(listToPage, 0, limit);
+    	return listToPage;
     }
 
     public List<T> findMax(List<T> objs, int limit)
