@@ -32,7 +32,6 @@ public class CoordonneesPOIProvider extends DbProvider<CoordonneesPOI> {
 			Query query = getQuery();
 			Constraint lonT = query.descend("longitude").constrain(coord.getLongitude());
 			query.descend("latitude").constrain(coord.getLatitude()).and(lonT);
-			query.descend("id").orderDescending();
 			resultat = query.execute();
 			retour = findMax(resultat,1);
 		} catch (NullPointerException e) {

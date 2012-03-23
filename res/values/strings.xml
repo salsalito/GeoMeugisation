@@ -4,8 +4,10 @@
     <string name="hello">Hello World, MeugeActivity!</string>
     <string name="app_name">GeoMeugisation</string>
 	<string name="mapskey">0JvwL-yIit1thjxATDo5RdBbeqqYjNz1QAasVkg</string>
-	<string name="database_file_interne">/poimeuge.db4o</string>
+	<string name="database_file_interne">/monmeuge.db4o</string>
 	<string name="database_file_externe">/meuge/poimeuge.db4o</string>
+	<string name="log_file_externe">/meuge/logs.txt</string>
+	<string name="log_enable">true</string>
 	<drawable name="white">#ffffff</drawable>
     <drawable name="blue">#2554C7</drawable>
     <drawable name="green">#347C2C</drawable>

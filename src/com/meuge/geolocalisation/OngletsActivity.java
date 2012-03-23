@@ -14,6 +14,7 @@ public class OngletsActivity extends TabActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BundleTools.micrologMainConfigurator(this);
         chargeBase();
         setContentView(R.layout.main);
         TabHost tabHost =  getTabHost(); 

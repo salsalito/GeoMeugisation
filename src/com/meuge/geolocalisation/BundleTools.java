@@ -1,26 +1,28 @@
 package com.meuge.geolocalisation;
 
-import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.code.microlog4android.Logger;
+import com.google.code.microlog4android.LoggerFactory;
+import com.google.code.microlog4android.appender.Appender;
+import com.google.code.microlog4android.appender.FileAppender;
+import com.google.code.microlog4android.appender.LogCatAppender;
+import com.google.code.microlog4android.config.PropertyConfigurator;
+import com.google.code.microlog4android.format.PatternFormatter;
+
 public final class BundleTools {
-	     
+		public  static  Logger logger = LoggerFactory.getLogger();
 	    private static String LATITUDEINFO = "LATITUDEINFO";
 	    private static String LONGITUDEINFO = "LONGITUDEINFO";
 	    private static String ADRESSEINFO = "ADRESSEINFO";
@@ -122,7 +124,28 @@ public final class BundleTools {
 		public static void resetCoords() {
 			getCoords().clear();
 		}
-		
+	    /**
+	     * Configure microlog
+	     */
+	    public static void micrologMainConfigurator(Context ctx) {
+	    	
+	    		
+	            PropertyConfigurator.getConfigurator(ctx).configure().;
+	            FileAppender appender = new FileAppender();
+	            LogCatAppender logCat = new LogCatAppender();
+	            PatternFormatter patternFormatter=new PatternFormatter(); 
+	            patternFormatter.setPattern("%d{DATE} [%P] %m"); 
+	            appender.setFileName( "meuge.txt");
+	            logCat.setFormatter(patternFormatter);
+	            appender.setFormatter(patternFormatter); 
+	            logger.addAppender(appender);	            
+	            logger.addAppender(logCat);	            
+	            
+	            logger.debug("Michou Bidou");
+	            logger.debug("Michou Bidou2");
+	            logger.debug("Michou Bidou3");
+	    }
+     
 		public static void copyDataBase(Context ctx, SharedPreferences sharedPreferences)
 		{   
 			

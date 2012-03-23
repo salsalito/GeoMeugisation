@@ -8,7 +8,6 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -16,10 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
-import com.db4o.foundation.Collection4;
-
-
-import android.app.Activity;
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -32,8 +27,12 @@ import android.widget.ImageView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
+
 public class SongsActivity extends ExpandableListActivity {
 
+
+
+	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.songs_layout);   
@@ -84,7 +83,6 @@ public class SongsActivity extends ExpandableListActivity {
 	          ArrayList<String> tmpR =mesKeys.hasMoreElements() ? categories.get(categories.keys().nextElement()) : new ArrayList<String>();
 	          for (int elements = 0; elements < tmpR.size() ; elements++)
 	          {
-	        	  
 	        	  HashMap<String, String> child = new HashMap<String, String>();
 		           child.put( "Sub Item", tmpR.get(elements));
 		           secList.add( child );
@@ -106,13 +104,12 @@ public class SongsActivity extends ExpandableListActivity {
    //     Bundle extras = getParent().getIntent().getExtras();
         if (BundleTools.getLatitude() !=(double)0 && BundleTools.getLongitude() != (double) 0)
         {
-
 	        CoordonneesPOI coordonnesPassees = new CoordonneesPOI();
 	        coordonnesPassees.setLatitude(BundleTools.getLatitude());
 	        coordonnesPassees.setLongitude(BundleTools.getLongitude());
 	        coordonnesPassees.setPositions(CalculLatLong.calculate(BundleTools.getLatitude(), BundleTools.getLongitude()));
 	    	CoordonneesPOIProvider cp = new CoordonneesPOIProvider(CoordonneesPOI.class, this);
-			List<CoordonneesPOI> tmp = cp.findAllMax(CoordonneesPOIProvider.ALLRECORDS);
+	    	List<CoordonneesPOI> tmp = cp.findAllMax(CoordonneesPOIProvider.ALLRECORDS);
 			TreeSet<KmsCalcules> monTri = new TreeSet<KmsCalcules>(new CollectionComparator());
 			for (CoordonneesPOI i : tmp)
 			{
@@ -122,8 +119,6 @@ public class SongsActivity extends ExpandableListActivity {
 			}
 			cp.close();
 			cp.db().close();
-			
-
 			Hashtable<String, ArrayList<String>> categories = new Hashtable<String, ArrayList<String>>();
 			for (Iterator<KmsCalcules> i= monTri.iterator(); i.hasNext();)
 			{
@@ -158,18 +153,6 @@ public class SongsActivity extends ExpandableListActivity {
 
 
 			
-			
-//			NumberFormat formatter = new DecimalFormat("#,###");
-//			Iterator<KmsCalcules> meskmsTries = monTri.iterator();
-//			resultat = "";
-//			for (int i =0 ; i < 7; i++)
-//			{
-//				if (meskmsTries.hasNext())
-//				{
-//					KmsCalcules meskms = (KmsCalcules) meskmsTries.next();
-//					resultat +=  formatter.format(meskms.getNbKms()) + " Km => "+ meskms.getCategorie()+ " : "+meskms.getInformations()+"\n";
-//				}
-//			}
 	    }
         ((TextView)findViewById(R.id.monChamp)).setText(resultat);
     }
