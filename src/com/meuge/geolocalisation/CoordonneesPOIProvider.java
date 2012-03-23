@@ -15,6 +15,7 @@ import android.content.Context;
 
 public class CoordonneesPOIProvider extends DbProvider<CoordonneesPOI> {
 	private Context contextCreated;
+	public static int ALLRECORDS = -1;
 	public CoordonneesPOIProvider(Class<CoordonneesPOI> persistentClass, Context ctx) {
 		super(persistentClass, ctx);
 		this.contextCreated = ctx;
