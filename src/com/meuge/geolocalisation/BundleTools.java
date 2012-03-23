@@ -130,7 +130,7 @@ public final class BundleTools {
 	    public static void micrologMainConfigurator(Context ctx) {
 	    	
 	    		
-	            PropertyConfigurator.getConfigurator(ctx).configure().;
+	            PropertyConfigurator.getConfigurator(ctx).configure();
 	            FileAppender appender = new FileAppender();
 	            LogCatAppender logCat = new LogCatAppender();
 	            PatternFormatter patternFormatter=new PatternFormatter(); 
