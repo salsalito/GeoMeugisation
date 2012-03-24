@@ -18,11 +18,12 @@ import com.db4o.events.Event4;
 import com.db4o.events.EventListener4;
 import com.db4o.events.EventRegistry;
 import com.db4o.events.EventRegistryFactory;
+import com.google.code.microlog4android.Logger;
 
 public class Db4oHelper {
 	private static ObjectContainer oc = null;
     private Context context; 
-
+	private static Logger logger = LogPersos.getLoggerPerso();
     /**       
      * @param ctx
      */
@@ -44,7 +45,7 @@ public class Db4oHelper {
             return oc;
 
         } catch (Exception ie) {
-            Log.e(Db4oHelper.class.getName(), ie.toString());
+        	logger.error(Db4oHelper.class.getName() +" -> "+ ie.toString());
             return null;
         }
     }

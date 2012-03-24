@@ -34,6 +34,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	    /** Called when the activity is first created. */
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
+	    	LogPersos.initLog(getApplicationContext(), getSharedPreferences("appinfos",MODE_PRIVATE));
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.login);
 	        // Login button clicked

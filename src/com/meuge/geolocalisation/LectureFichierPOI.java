@@ -9,12 +9,14 @@ import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.code.microlog4android.Logger;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 public class LectureFichierPOI {
-	
+	private static Logger logger = LogPersos.getLoggerPerso();
 	private static boolean testNumber (String s){
 		Pattern pattern = Pattern.compile("\\d");
 		Matcher matcher = pattern.matcher(s);
@@ -23,10 +25,11 @@ public class LectureFichierPOI {
 		} 
 		return false; 
 	}
-	public static void LectureFichier (InputStream fichier, String nomFichier, Context ctx, SharedPreferences sharedPrefs)
+	public static void LectureFichier (InputStream fichier, String nomFichier, Context ctx, SharedPreferences sharedPreferences)
 	{
 		try{
-			saveDateChargement("Debut Chargement", sharedPrefs);
+			logger.debug("Debut Chargement Fichier");
+			saveDateChargement("Début "+nomFichier, sharedPreferences);
 	    	 String separator = ",";
 			 CoordonneesPOIProvider cp = new CoordonneesPOIProvider(CoordonneesPOI.class, ctx);	
 	    	  BufferedReader br = new BufferedReader(new InputStreamReader(fichier, "ISO-8859-1"));
@@ -56,7 +59,7 @@ public class LectureFichierPOI {
 		            	  if (testNumber(latitude)  && testNumber(longitude))
 		            		  cp.store(getCoordsPOI(Double.valueOf(latitude), Double.valueOf(longitude), magasin, infos, "Grands Magasins"));
 		            	  else 
-		            		  Log.e("MAGASINS",compteur+ " : Erreur ligne :" + strLine);
+		            		  logger.error("Fichier "+nomFichier+" Ligne "+compteur+ " : Erreur ligne :" + strLine);
 		              }
 	    		  }
 	              strLine = br.readLine();
@@ -68,10 +71,11 @@ public class LectureFichierPOI {
 	    		  cp.db().commit();
 	    		  cp.db().close();
 	    	  }
-	    	  saveDateChargement("Fin Chargement", sharedPrefs);
-	    	  saveChargement(compteur, true,sharedPrefs);
+	    	  logger.debug("Fin Chargement Fichier");
+	    	  saveDateChargement("Fin "+nomFichier, sharedPreferences);
+	    	  saveChargement(compteur, true,sharedPreferences);
 	    	}catch (Exception e){//Catch exception if any
-	    		Log.e("MAGASINS"," Erreur Avec le fichier :" + nomFichier);
+	    		logger.error(" Erreur Avec le fichier :" + nomFichier);
 	    	}
 		}
 

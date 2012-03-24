@@ -8,19 +8,18 @@ import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.Toast;
 
+import com.google.code.microlog4android.Logger;
+
 public class OngletsActivity extends TabActivity {
-	
+	private static Logger logger = LogPersos.getLoggerPerso();
 	/** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BundleTools.micrologMainConfigurator(this);
-        chargeBase();
         setContentView(R.layout.main);
         TabHost tabHost =  getTabHost(); 
         //initilatise avant l'affectation des activités
         tabHost.setup(); 
-        
         // Tab for Photos
         TabSpec meugespec = tabHost.newTabSpec("Meuge");
         meugespec.setIndicator("Meuge", getResources().getDrawable(R.drawable.icon_meuge_tab));
@@ -53,24 +52,6 @@ public class OngletsActivity extends TabActivity {
 
     }
     
-    private void chargeBase()
-    {
-    	if (!BundleTools.isDBaseLoaded(getPreferences(MODE_PRIVATE)))
-    	{
-    		BundleTools.copyDataBase(this,getPreferences(MODE_PRIVATE));
-    		if (!BundleTools.isDBaseLoaded(getPreferences(MODE_PRIVATE)))
-    		{
-	    		Log.i("DataBase", "Chargement de base Magasins debutee");
-	    		//...on affiche un Toast pour le signaler à l'utilisateur
-	    		Toast.makeText(this,"Chargement de base Magasins",Toast.LENGTH_SHORT).show();
-	    		LectureFichierPOI.LectureFichier(getApplicationContext().getResources().openRawResource(R.raw.magasins),"Magasins.asc", this,getPreferences(MODE_PRIVATE));
-	    		Log.i("DataBase", "Fin de chargement de base Magasins");
-	    		Toast.makeText(this,"Chargement de base Magasins finie",Toast.LENGTH_SHORT).show();
-	    		//Magasins_But.Magasins_But(contextCreated);
-    		}
-    	}
-
-    }
     
     @Override
 	protected void onResume() {

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.google.code.microlog4android.Logger;
+
 
 
 import android.app.Activity;
@@ -37,7 +39,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
     private Location location;
     private String choix_source = "";
     final Handler handler = new Handler();
-    
+	private static Logger logger = LogPersos.getLoggerPerso();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -382,7 +384,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 	
 	public void onLocationChanged(Location location) {
 		//Lorsque la position change...
-		Log.i("Tuto géolocalisation", "La position a changé.");
+		logger.info("Geolocalisation : La position a changé.");
 		//... on stop le cercle de chargement
 		setProgressBarIndeterminateVisibility(false);
 		//... on active le bouton pour afficher l'adresse
@@ -397,7 +399,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
  
 	public void onProviderDisabled(String provider) {
 		//Lorsque la source (GSP ou réseau GSM) est désactivé
-		Log.i("Tuto géolocalisation", "La source a été désactivé");
+		logger.info("Géolocalisation : La source a été désactivé");
 		//...on affiche un Toast pour le signaler à l'utilisateur
 		Toast.makeText(MeugeActivity.this,
 				String.format("La source \"%s\" a été désactivé", provider),
@@ -454,10 +456,10 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 	}
 	
 	public void onProviderEnabled(String provider) {
-		Log.i("Géolocalisation", "La source a été activé.");
+		logger.info("Géolocalisation : La source a été activé.");
 	}
 	public void onStatusChanged(String provider, int status, Bundle extras) {
-		Log.i("Géolocalisation", "Le statut de la source a changé.");
+		logger.info("Géolocalisation : Le statut de la source a changé.");
 	}
 	
  }

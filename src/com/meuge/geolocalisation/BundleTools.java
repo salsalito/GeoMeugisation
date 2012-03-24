@@ -15,20 +15,19 @@ import android.util.Log;
 
 import com.google.code.microlog4android.Logger;
 import com.google.code.microlog4android.LoggerFactory;
-import com.google.code.microlog4android.appender.Appender;
 import com.google.code.microlog4android.appender.FileAppender;
 import com.google.code.microlog4android.appender.LogCatAppender;
 import com.google.code.microlog4android.config.PropertyConfigurator;
 import com.google.code.microlog4android.format.PatternFormatter;
 
 public final class BundleTools {
-		public  static  Logger logger = LoggerFactory.getLogger();
 	    private static String LATITUDEINFO = "LATITUDEINFO";
 	    private static String LONGITUDEINFO = "LONGITUDEINFO";
 	    private static String ADRESSEINFO = "ADRESSEINFO";
 	    private static String GPS_ON_OFF ="GPSINFO";
 	    public static String DATABASE_CHARGE ="DATABASE_LOADED";
 	    public static String NB_ELEMENTS ="NB_ELEMENTS";
+		private static Logger logger = LogPersos.getLoggerPerso();
 	    
 		private static final class BundleToolsHolder {
 			static final Bundle singleton =  new Bundle();
@@ -124,28 +123,6 @@ public final class BundleTools {
 		public static void resetCoords() {
 			getCoords().clear();
 		}
-	    /**
-	     * Configure microlog
-	     */
-	    public static void micrologMainConfigurator(Context ctx) {
-	    	
-	    		
-	            PropertyConfigurator.getConfigurator(ctx).configure();
-	            FileAppender appender = new FileAppender();
-	            LogCatAppender logCat = new LogCatAppender();
-	            PatternFormatter patternFormatter=new PatternFormatter(); 
-	            patternFormatter.setPattern("%d{DATE} [%P] %m"); 
-	            appender.setFileName(ctx.getString(R.string.log_file_externe));
-	            logCat.setFormatter(patternFormatter);
-	            appender.setAppend(true);
-	            appender.setFormatter(patternFormatter); 
-	            logger.addAppender(appender);	            
-	            logger.addAppender(logCat);	            
-	            
-	            logger.debug("Michou Bidou");
-	            logger.debug("Michou Bidou2");
-	            logger.debug("Michou Bidou3");
-	    }
      
 		public static void copyDataBase(Context ctx, SharedPreferences sharedPreferences)
 		{   
@@ -162,9 +139,9 @@ public final class BundleTools {
 	        		editor.putBoolean(BundleTools.DATABASE_CHARGE, true);
 	                editor.commit();
 			} catch (FileNotFoundException e) {
-				Log.e("DATABASE", "Fichier non trouve");
+				logger.error("Fichier non trouve : "+ctx.getString(R.string.database_file_interne));
 			} catch (IOException e) {
-				Log.e("DATABASE", "Fichier bizarre "+ctx.getString(R.string.database_file_interne)+" non trouve");
+				logger.error("Fichier bizarre "+ctx.getString(R.string.database_file_interne)+" non trouve");
 			}               
          }
 }

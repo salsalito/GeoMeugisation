@@ -15,6 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
+import com.google.code.microlog4android.Logger;
+
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -30,8 +32,7 @@ import android.widget.TextView;
 
 public class SongsActivity extends ExpandableListActivity {
 
-
-
+	private static Logger logger = LogPersos.getLoggerPerso();
 	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,8 +110,11 @@ public class SongsActivity extends ExpandableListActivity {
 	        coordonnesPassees.setLongitude(BundleTools.getLongitude());
 	        coordonnesPassees.setPositions(CalculLatLong.calculate(BundleTools.getLatitude(), BundleTools.getLongitude()));
 	    	CoordonneesPOIProvider cp = new CoordonneesPOIProvider(CoordonneesPOI.class, this);
+	    	logger.info("Debut Requete FindAllMax");
 	    	List<CoordonneesPOI> tmp = cp.findAllMax(CoordonneesPOIProvider.ALLRECORDS);
+	    	logger.info("Debut Tri de FindAllMax");
 			TreeSet<KmsCalcules> monTri = new TreeSet<KmsCalcules>(new CollectionComparator());
+			logger.info("Début de Calcul de Kms");
 			for (CoordonneesPOI i : tmp)
 			{
 				double tempFormula = Math.acos(formula(coordonnesPassees.getPositions(), i.getPositions())) * (double)6371;
@@ -119,6 +123,7 @@ public class SongsActivity extends ExpandableListActivity {
 			}
 			cp.close();
 			cp.db().close();
+			logger.info("Début de Calcul de Mise a Dispos des Kms");
 			Hashtable<String, ArrayList<String>> categories = new Hashtable<String, ArrayList<String>>();
 			for (Iterator<KmsCalcules> i= monTri.iterator(); i.hasNext();)
 			{
@@ -150,6 +155,7 @@ public class SongsActivity extends ExpandableListActivity {
 		                    new int[] { R.id.grp_enfant}     // Data under the keys above go into these TextViews.
 		                );
 		            setListAdapter( expListAdapter );       // setting the adapter in the list.
+		            logger.info("Fin de Calcul de Mise a Dispos des Kms");
 
 
 			
@@ -174,13 +180,9 @@ public class SongsActivity extends ExpandableListActivity {
        // 	image.setImageBitmap(bitmap);
 
         	} catch (MalformedURLException e) {
-
-        		Log.e ("Image","Erreur sur URL l 'image" );
-
+        		logger.error("Erreur sur URL l 'image : "+ myURL);
         	} catch (IOException e) {
-
-        	Log.e ("Image","Erreur sur l 'image" );
-
+        		logger.error("Erreur sur URL l 'image : "+ myURL);
         	}
         	return bitmap;
     }
