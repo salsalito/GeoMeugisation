@@ -15,8 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
-import com.google.code.microlog4android.Logger;
-
 import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -24,13 +22,14 @@ import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
+import com.google.code.microlog4android.Logger;
 
-public class SongsActivity extends ExpandableListActivity {
+
+public class InfosActivity extends ExpandableListActivity {
 
 	private static Logger logger = LogPersos.getLoggerPerso();
 	

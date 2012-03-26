@@ -22,7 +22,7 @@ import com.google.android.maps.Overlay;
  * @author 
  *
  */
-public class VideosActivity extends MapActivity {
+public class CarteActivity extends MapActivity {
 
 	  public boolean onKeyDown(int keyCode, KeyEvent event) 
 	    {
