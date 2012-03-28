@@ -3,13 +3,13 @@ package com.meuge.geolocalisation;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URL;
 import java.util.Enumeration;
 
-
+import org.ksoap2.serialization.SoapObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -34,6 +34,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	    /** Called when the activity is first created. */
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
+	    	//getMich();
 	    	LogPersos.initLog(getApplicationContext(), getSharedPreferences("appinfos",MODE_PRIVATE));
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.login);
@@ -46,17 +47,19 @@ public class LoginActivity extends Activity implements OnClickListener {
 	        result = (TextView)findViewById(R.id.lbl_result);
 	    }
 	    private void getMich() {
-			// TODO  S'ocupper de login mot de pass
-	    	/*
-			 ClientResource cr = new ClientResource("http://restlet-example-serialization.appspot.com/contacts/123");
-			cr.setRequestEntityBuffering(true);
-			ContactResource resource = cr.wrap(ContactResource.class);
+	    	 	String data = "";
+	    	    	    String soapAction = "http://localhost:8080/WebServiceProject/services/StockQuoteService";
+	    	    String type_of_soap = "GetExitDetailsExtn";      
+	   
+	    		String endPoint    = "http://localhost:8080/WebServiceProject/services/StockQuoteService";
+	    		String nameSpace   = "http://webservices.meuge.com";
+	    		String nameService = "StockQuoteServiceService";
+	    	//	URL url = new URL (endPoint+"?wsdl");
+	    		String operation ="getPrice";
+	    		
+	    		 SoapObject Request = new SoapObject(nameSpace, operation);
 
-			// Get the remote contact
-			Contact contact = resource.retrieve();
-			contact.getClass();
-			*/
-
+	    
 	    }
 	    @Override
 	    public boolean onCreateOptionsMenu(Menu menu) {
