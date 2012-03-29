@@ -18,12 +18,12 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 
-public class VideosActivityData extends Overlay{
+public class CarteActivityData extends Overlay{
 	private GeoPoint p;
     private Resources res;
     private Context con;
     
-	public VideosActivityData(GeoPoint p0, Resources resources0, Context context0) {
+	public CarteActivityData(GeoPoint p0, Resources resources0, Context context0) {
 		p = p0;
 		res = resources0;
 		con = context0;

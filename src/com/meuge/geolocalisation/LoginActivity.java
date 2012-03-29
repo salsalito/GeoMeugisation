@@ -6,7 +6,11 @@ import java.net.SocketException;
 import java.net.URL;
 import java.util.Enumeration;
 
+import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapPrimitive;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -34,7 +38,7 @@ public class LoginActivity extends Activity implements OnClickListener {
 	    /** Called when the activity is first created. */
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
-	    	//getMich();
+	    	getMich();
 	    	LogPersos.initLog(getApplicationContext(), getSharedPreferences("appinfos",MODE_PRIVATE));
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.login);
@@ -47,18 +51,39 @@ public class LoginActivity extends Activity implements OnClickListener {
 	        result = (TextView)findViewById(R.id.lbl_result);
 	    }
 	    private void getMich() {
-	    	 	String data = "";
-	    	    	    String soapAction = "http://localhost:8080/WebServiceProject/services/StockQuoteService";
-	    	    String type_of_soap = "GetExitDetailsExtn";      
-	   
-	    		String endPoint    = "http://localhost:8080/WebServiceProject/services/StockQuoteService";
-	    		String nameSpace   = "http://webservices.meuge.com";
-	    		String nameService = "StockQuoteServiceService";
-	    	//	URL url = new URL (endPoint+"?wsdl");
-	    		String operation ="getPrice";
-	    		
-	    		 SoapObject Request = new SoapObject(nameSpace, operation);
+	    	String NAMESPACE = "http://webservices.meuge.com/" ;
+	    	String METHOD_NAME = "getPrice";
+	    	String SOAP_ACTION = NAMESPACE + METHOD_NAME;
+	    	String URL = "http://localhost:8080/WebServiceProject/services/StockQuoteService";
 
+
+//	    		String endPoint    = "http://localhost:8080/WebServiceProject/services/StockQuoteService";
+//	    		String nameSpace   = "http://webservices.meuge.com";
+//	    		String nameService = "StockQuoteServiceService";
+//	    		URL url = new URL (endPoint+"?wsdl");
+//	    		String operation ="getPrice";
+	    		
+	    	SoapObject request = new SoapObject(NAMESPACE, METHOD_NAME);
+	    	SoapSerializationEnvelope envelope =
+	    		    new SoapSerializationEnvelope(SoapEnvelope.VER11);
+	    		    envelope.dotNet =  false;
+	    		    envelope.setOutputSoapObject(request);
+	    		    HttpTransportSE androidHttpTransport = new HttpTransportSE(URL);
+
+	    		    try
+	    		    {
+
+	    		    androidHttpTransport.call(SOAP_ACTION, envelope);
+
+	    		    SoapPrimitive Result = (SoapPrimitive)envelope.getResponse();
+
+	    		   String hresult = Result.toString();
+	    		   hresult.toCharArray();
+	    		    }
+	    		    catch(Exception e) 
+	    		    {
+	    		    	e.getClass();
+	    		    }
 	    
 	    }
 	    @Override

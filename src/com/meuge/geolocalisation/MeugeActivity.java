@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
+import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
@@ -50,7 +51,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
  
         //On récupère le service de localisation
         lManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
- 
+
         //Initialisation de l'écran
         reinitialisationEcran();
  
@@ -61,6 +62,7 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
         findViewById(R.id.refresh).setOnClickListener(this);
         findViewById(R.id.save).setOnClickListener(this);
         findViewById(R.id.world).setOnClickListener(this);
+        obtenirPosition();
     }
     
     //On cree le menu Quitter
@@ -137,7 +139,8 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
               new DialogInterface.OnClickListener(){  
               public void onClick(DialogInterface dialog, int id){  
                    dialog.cancel();
-                   choisirSource();
+                   obtenirPosition();
+              //     choisirSource();
               }  
          });  
     AlertDialog alert = builder.create(); 
@@ -233,10 +236,13 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 	    if (!lManager.isProviderEnabled(LocationManager.GPS_PROVIDER) &&  !BundleTools.GPSStatus()){  
 	          createGpsDisabledAlert();  
 	    }
-	    else choisirSource();
+	    else obtenirPosition();
+	    //else choisirSource();
 	}
  
 	private void obtenirPosition() {
+		
+		//on ajoute dans la barre de titre de l'application le nom de la source utilisé
 		//on démarre le cercle de chargement
 		setProgressBarIndeterminateVisibility(true);
  
@@ -244,10 +250,17 @@ public class MeugeActivity extends Activity  implements OnClickListener, Locatio
 		//sur la source (le provider) choisie, toute les minutes (60000millisecondes).
 		//Le paramètre this spécifie que notre classe implémente LocationListener et recevra
 		//les notifications.
-		lManager.requestLocationUpdates(choix_source, 60000, 0, this);
+	      //Choix du service de localisation en fonction de critères
+        Criteria crit = new Criteria();
+        crit.setCostAllowed(false);
+     //   crit.setAccuracy(100); //précis à 1km pret
+
+        String choix_s = lManager.getBestProvider(crit, true);
+        setTitle(String.format("%s - %s", getString(R.string.app_name),
+        		choix_source));
+		lManager.requestLocationUpdates(choix_s, 60000, 0, this);
 	}
  
-
 	
 	private void afficherLocation() {
 		//On affiche les informations de la position a l'écran

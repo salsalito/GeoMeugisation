@@ -71,7 +71,7 @@ public class CarteActivity extends MapActivity {
         //Positionnement de nos coordonnées
         mc.animateTo(p);
         mc.setZoom(17);
-        VideosActivityData mapOverlay = new VideosActivityData(p,getResources(), getBaseContext());
+        CarteActivityData mapOverlay = new CarteActivityData(p,getResources(), getBaseContext());
         List<Overlay> listOfOverlays = mapView.getOverlays();
         listOfOverlays.clear();
         listOfOverlays.add(mapOverlay);        

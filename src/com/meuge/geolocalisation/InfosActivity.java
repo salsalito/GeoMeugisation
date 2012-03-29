@@ -19,6 +19,7 @@ import android.app.ExpandableListActivity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -107,8 +108,9 @@ public class InfosActivity extends ExpandableListActivity {
 	        CoordonneesPOI coordonnesPassees = new CoordonneesPOI();
 	        coordonnesPassees.setLatitude(BundleTools.getLatitude());
 	        coordonnesPassees.setLongitude(BundleTools.getLongitude());
-	        coordonnesPassees.setPositions(CalculLatLong.calculate(BundleTools.getLatitude(), BundleTools.getLongitude()));
+	        
 	    	CoordonneesPOIProvider cp = new CoordonneesPOIProvider(CoordonneesPOI.class, this);
+	        coordonnesPassees.setPositions(CalculLatLong.calculate(BundleTools.getLatitude(), BundleTools.getLongitude()));
 	    	logger.info("Debut Requete FindAllMax");
 	    	List<CoordonneesPOI> tmp = cp.findAllMax(CoordonneesPOIProvider.ALLRECORDS);
 	    	logger.info("Debut Tri de FindAllMax");
@@ -116,6 +118,7 @@ public class InfosActivity extends ExpandableListActivity {
 			logger.info("Début de Calcul de Kms");
 			for (CoordonneesPOI i : tmp)
 			{
+//		    	Location.distanceBetween(BundleTools.getLatitude(), BundleTools.getLongitude(), endLatitude, endLongitude, results)
 				double tempFormula = Math.acos(formula(coordonnesPassees.getPositions(), i.getPositions())) * (double)6371;
 				KmsCalcules tmpKms = new KmsCalcules(tempFormula, i.getCategorie(), i.getAdresse());
 				monTri.add(tmpKms);
