@@ -118,8 +118,10 @@ public class InfosActivity extends ExpandableListActivity {
 			logger.info("Début de Calcul de Kms");
 			for (CoordonneesPOI i : tmp)
 			{
-//		    	Location.distanceBetween(BundleTools.getLatitude(), BundleTools.getLongitude(), endLatitude, endLongitude, results)
-				double tempFormula = Math.acos(formula(coordonnesPassees.getPositions(), i.getPositions())) * (double)6371;
+				float results[]=new float[1];
+		    	Location.distanceBetween(BundleTools.getLatitude(), BundleTools.getLongitude(), i.getLatitude(), i.getLongitude(), results);
+		//		double tempFormula = Math.acos(formula(coordonnesPassees.getPositions(), i.getPositions())) * (double)6371;
+		    	double tempFormula = Double.valueOf(Float.toString(results[0])) / (double)1000.0;
 				KmsCalcules tmpKms = new KmsCalcules(tempFormula, i.getCategorie(), i.getAdresse());
 				monTri.add(tmpKms);
 			}
