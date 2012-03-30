@@ -6,7 +6,6 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -23,11 +22,10 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
-import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 
+import com.beanie.example.list.adapter.ExpandableListAdapter;
 import com.google.code.microlog4android.Logger;
 
 
@@ -73,6 +71,16 @@ public class InfosActivity extends ExpandableListActivity {
          }
          return result;
    }
+	 
+	 private ArrayList<String> getParents(Hashtable<String, ArrayList<String>> categories) {
+		 ArrayList<String> result = new ArrayList<String>();
+		 for( Enumeration<String> i = categories.keys() ; i.hasMoreElements() ;  ) { // n groups........
+			 HashMap<String, String> m = new HashMap<String, String>();
+			 //m.put( "Group Item",i.nextElement()); // cle + valeur
+			 result.add(i.nextElement());
+		 }
+		 return result;
+	 }
 	 
 	 
 	 
@@ -149,18 +157,24 @@ public class InfosActivity extends ExpandableListActivity {
 				}
 				else break;
 			}
-			SimpleExpandableListAdapter expListAdapter =
-		            new SimpleExpandableListAdapter(
-		                    this,
-		                    createParents(categories),              // Creating group List.
-		                    R.layout.parents,             // Group item layout XML.
-		                    new String[] { "Group Item" },  // the key of group item.
-		                    new int[] { R.id.grp_parent },    // ID of each group item.-Data under the key goes into this TextView.
-		                    createEnfants(categories),              // childData describes second-level entries.
-		                    R.layout.enfants,             // Layout for sub-level entries(second level).
-		                    new String[] {"Sub Item"},      // Keys in childData maps to display.
-		                    new int[] { R.id.grp_enfant}     // Data under the keys above go into these TextViews.
-		                );
+			
+			
+			ExpandableListAdapter expListAdapter = new ExpandableListAdapter(this, getParents(categories),
+		                new ArrayList<ArrayList<KmsCalcules>>());
+
+			
+//			SimpleExpandableListAdapter expListAdapter =
+//		            new SimpleExpandableListAdapter(
+//		                    this,
+//		                    createParents(categories),              // Creating group List.
+//		                    R.layout.parents,             // Group item layout XML.
+//		                    new String[] { "Group Item" },  // the key of group item.
+//		                    new int[] { R.id.grp_parent },    // ID of each group item.-Data under the key goes into this TextView.
+//		                    createEnfants(categories),              // childData describes second-level entries.
+//		                    R.layout.enfants,             // Layout for sub-level entries(second level).
+//		                    new String[] {"Sub Item"},      // Keys in childData maps to display.
+//		                    new int[] { R.id.grp_enfant}     // Data under the keys above go into these TextViews.
+//		                );
 		            setListAdapter( expListAdapter );       // setting the adapter in the list.
 		            logger.info("Fin de Calcul de Mise a Dispos des Kms");
 
