@@ -23,6 +23,7 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
@@ -76,12 +77,16 @@ public class InfosActivity extends ExpandableListActivity {
 	 
 	 
 	 private ArrayList<ArrayList<HashMap<String, String>>> createEnfants(Hashtable<String, ArrayList<String>> categories) {
-		    NumberFormat formatter = new DecimalFormat("#,###");
 	        ArrayList<ArrayList<HashMap<String, String>>> result = new ArrayList<ArrayList<HashMap<String, String>>>();
 	        Enumeration<String> mesKeys = categories.keys();
 	        for( int i = 0 ; i < categories.size() ; i++ ) { 
 	          ArrayList<HashMap<String, String>> secList = new ArrayList<HashMap<String, String>>();
-	          ArrayList<String> tmpR =mesKeys.hasMoreElements() ? categories.get(categories.keys().nextElement()) : new ArrayList<String>();
+	          String cle = "";
+	          if (mesKeys.hasMoreElements())
+	          {
+	        	  cle = mesKeys.nextElement();
+	          }
+	          ArrayList<String> tmpR = cle.length() > 0 ? categories.get(cle) : new ArrayList<String>();
 	          for (int elements = 0; elements < tmpR.size() ; elements++)
 	          {
 	        	  HashMap<String, String> child = new HashMap<String, String>();
@@ -96,9 +101,6 @@ public class InfosActivity extends ExpandableListActivity {
 	
 	private void ecritureTexte()
     {
-//		arrayInfos[0] = (double) 48.858219;
-//		arrayInfos[1] = (double) 2.294498;
-		//Coordonnees tour eiffel
 		// Recuperation des informations passées par les onglets
 		
 		String resultat = "Aucune position définie !!!";
@@ -127,8 +129,10 @@ public class InfosActivity extends ExpandableListActivity {
 			}
 			cp.close();
 			cp.db().close();
+
 			logger.info("Début de Calcul de Mise a Dispos des Kms");
 			Hashtable<String, ArrayList<String>> categories = new Hashtable<String, ArrayList<String>>();
+			
 			for (Iterator<KmsCalcules> i= monTri.iterator(); i.hasNext();)
 			{
 				if (categories.size() < 6)
@@ -140,12 +144,11 @@ public class InfosActivity extends ExpandableListActivity {
 					{
 						categories.put(meskms.getCategorie(), new ArrayList<String>());
 					}
-					tmpCats.add(meskms.getInformations());
+					tmpCats.add(meskms.getInformations() + "["+new DecimalFormat("#,###.#").format(meskms.getNbKms())+"Kms]");
 					categories.put(meskms.getCategorie(), tmpCats);
 				}
 				else break;
 			}
-			
 			SimpleExpandableListAdapter expListAdapter =
 		            new SimpleExpandableListAdapter(
 		                    this,
