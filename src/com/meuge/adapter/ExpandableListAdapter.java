@@ -79,13 +79,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         // Depending upon the child type, set the imageTextView01
         tv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-//        if (vehicle instanceof Car) {
-//            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.car, 0, 0, 0);
-//        } else if (vehicle instanceof Bus) {
-//            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.bus, 0, 0, 0);
-//        } else if (vehicle instanceof Bike) {
-//            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.bike, 0, 0, 0);
-//        }
+        if ("But".equalsIgnoreCase(meskms.getCategorie())) {
+            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.but, 0, 0, 0);
+        } else if ("Conforama".equalsIgnoreCase(meskms.getCategorie())) {
+            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.conforama, 0, 0, 0);
+        } else if ("Darty".equalsIgnoreCase(meskms.getCategorie())) {
+            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.darty, 0, 0, 0);
+        } else if ("Boulanger".equalsIgnoreCase(meskms.getCategorie())) {
+            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.boulanger, 0, 0, 0);
+        } else if ("Metro".equalsIgnoreCase(meskms.getCategorie())) {
+            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.metro, 0, 0, 0);
+        }
         return convertView;
     }
 
