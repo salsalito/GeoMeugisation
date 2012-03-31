@@ -77,21 +77,25 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView tv = (TextView) convertView.findViewById(R.id.grp_enfant);
         tv.setText("   " + meskms.getInformations() + "["+new DecimalFormat("#,###.#").format(meskms.getNbKms())+"Kms]");
 
-        // Depending upon the child type, set the imageTextView01
-        tv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-        if ("But".equalsIgnoreCase(meskms.getCategorie())) {
-            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.but, 0, 0, 0);
-        } else if ("Conforama".equalsIgnoreCase(meskms.getCategorie())) {
-            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.conforama, 0, 0, 0);
-        } else if ("Darty".equalsIgnoreCase(meskms.getCategorie())) {
-            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.darty, 0, 0, 0);
-        } else if ("Boulanger".equalsIgnoreCase(meskms.getCategorie())) {
-            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.boulanger, 0, 0, 0);
-        } else if ("Metro".equalsIgnoreCase(meskms.getCategorie())) {
-            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.metro, 0, 0, 0);
-        }
+        iconeLoader(meskms.getCategorie(), tv);
         return convertView;
     }
+
+	private void iconeLoader(String categ, TextView tv) {
+		// Depending upon the child type, set the imageTextView01
+        tv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+        if ("But".equalsIgnoreCase(categ)) {
+            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.but, 0, 0, 0);
+        } else if ("Conforama".equalsIgnoreCase(categ)) {
+            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.conforama, 0, 0, 0);
+        } else if ("Darty".equalsIgnoreCase(categ)) {
+            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.darty, 0, 0, 0);
+        } else if ("Boulanger".equalsIgnoreCase(categ)) {
+            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.boulanger, 0, 0, 0);
+        } else if ("Metro".equalsIgnoreCase(categ)) {
+            tv.setCompoundDrawablesWithIntrinsicBounds(R.drawable.metro, 0, 0, 0);
+        }
+	}
 
     @Override
     public int getChildrenCount(int groupPosition) {
@@ -125,6 +129,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
         TextView tv = (TextView) convertView.findViewById(R.id.grp_parent);
         tv.setText(group);
+        iconeLoader(group, tv);
+
         return convertView;
     }
 
