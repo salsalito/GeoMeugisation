@@ -25,8 +25,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.beanie.example.list.adapter.ExpandableListAdapter;
 import com.google.code.microlog4android.Logger;
+import com.meuge.adapter.ExpandableListAdapter;
 
 
 public class InfosActivity extends ExpandableListActivity {
@@ -54,57 +54,15 @@ public class InfosActivity extends ExpandableListActivity {
 	    }
 	    return false;
 	}
-	private double formula(CalculLatLong coordsCalculate, CalculLatLong toCoord)
-	{
-		return (coordsCalculate.getCOSLAT() * toCoord.getCOSLAT()
-				*(toCoord.getCOSLNG() * coordsCalculate.getCOSLNG()
-			    +toCoord.getSINLNG() * coordsCalculate.getSINLNG()
-			    )+coordsCalculate.getSINLAT() * toCoord.getSINLAT());
-	}
-	
-	 private ArrayList<HashMap<String,String>> createParents(Hashtable<String, ArrayList<String>> categories) {
-         ArrayList<HashMap<String,String>> result = new ArrayList<HashMap<String, String>>();
-         for( Enumeration<String> i = categories.keys() ; i.hasMoreElements() ;  ) { // n groups........
-           HashMap<String, String> m = new HashMap<String, String>();
-           m.put( "Group Item",i.nextElement()); // cle + valeur
-           result.add( m );
-         }
-         return result;
-   }
 	 
 	 private ArrayList<String> getParents(Hashtable<String, ArrayList<String>> categories) {
 		 ArrayList<String> result = new ArrayList<String>();
 		 for( Enumeration<String> i = categories.keys() ; i.hasMoreElements() ;  ) { // n groups........
-			 HashMap<String, String> m = new HashMap<String, String>();
-			 //m.put( "Group Item",i.nextElement()); // cle + valeur
 			 result.add(i.nextElement());
 		 }
 		 return result;
 	 }
 	 
-	 
-	 
-	 private ArrayList<ArrayList<HashMap<String, String>>> createEnfants(Hashtable<String, ArrayList<String>> categories) {
-	        ArrayList<ArrayList<HashMap<String, String>>> result = new ArrayList<ArrayList<HashMap<String, String>>>();
-	        Enumeration<String> mesKeys = categories.keys();
-	        for( int i = 0 ; i < categories.size() ; i++ ) { 
-	          ArrayList<HashMap<String, String>> secList = new ArrayList<HashMap<String, String>>();
-	          String cle = "";
-	          if (mesKeys.hasMoreElements())
-	          {
-	        	  cle = mesKeys.nextElement();
-	          }
-	          ArrayList<String> tmpR = cle.length() > 0 ? categories.get(cle) : new ArrayList<String>();
-	          for (int elements = 0; elements < tmpR.size() ; elements++)
-	          {
-	        	  HashMap<String, String> child = new HashMap<String, String>();
-		           child.put( "Sub Item", tmpR.get(elements));
-		           secList.add( child );
-	          }
-	         result.add( secList );
-	        }
-	        return result;
-	    }
 	
 	
 	private void ecritureTexte()
@@ -130,7 +88,6 @@ public class InfosActivity extends ExpandableListActivity {
 			{
 				float results[]=new float[1];
 		    	Location.distanceBetween(BundleTools.getLatitude(), BundleTools.getLongitude(), i.getLatitude(), i.getLongitude(), results);
-		//		double tempFormula = Math.acos(formula(coordonnesPassees.getPositions(), i.getPositions())) * (double)6371;
 		    	double tempFormula = Double.valueOf(Float.toString(results[0])) / (double)1000.0;
 				KmsCalcules tmpKms = new KmsCalcules(tempFormula, i.getCategorie(), i.getAdresse());
 				monTri.add(tmpKms);
@@ -140,6 +97,8 @@ public class InfosActivity extends ExpandableListActivity {
 
 			logger.info("Début de Calcul de Mise a Dispos des Kms");
 			Hashtable<String, ArrayList<String>> categories = new Hashtable<String, ArrayList<String>>();
+			ExpandableListAdapter expListAdapter = new ExpandableListAdapter(this, getParents(categories),
+					new ArrayList<ArrayList<KmsCalcules>>());
 			
 			for (Iterator<KmsCalcules> i= monTri.iterator(); i.hasNext();)
 			{
@@ -152,6 +111,7 @@ public class InfosActivity extends ExpandableListActivity {
 					{
 						categories.put(meskms.getCategorie(), new ArrayList<String>());
 					}
+					expListAdapter.addItem(meskms);
 					tmpCats.add(meskms.getInformations() + "["+new DecimalFormat("#,###.#").format(meskms.getNbKms())+"Kms]");
 					categories.put(meskms.getCategorie(), tmpCats);
 				}
@@ -159,9 +119,6 @@ public class InfosActivity extends ExpandableListActivity {
 			}
 			
 			
-			ExpandableListAdapter expListAdapter = new ExpandableListAdapter(this, getParents(categories),
-		                new ArrayList<ArrayList<KmsCalcules>>());
-
 			
 //			SimpleExpandableListAdapter expListAdapter =
 //		            new SimpleExpandableListAdapter(

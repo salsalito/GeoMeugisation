@@ -1,6 +1,7 @@
 
-package com.beanie.example.list.adapter;
+package com.meuge.adapter;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 import android.content.Context;
@@ -67,14 +68,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild,
             View convertView, ViewGroup parent) {
-    	KmsCalcules vehicle = (KmsCalcules) getChild(groupPosition, childPosition);
+    	KmsCalcules meskms = (KmsCalcules) getChild(groupPosition, childPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.enfants, null);
         }
         TextView tv = (TextView) convertView.findViewById(R.id.grp_enfant);
-        tv.setText("   " + vehicle.getInformations());
+        tv.setText("   " + meskms.getInformations() + "["+new DecimalFormat("#,###.#").format(meskms.getNbKms())+"Kms]");
 
         // Depending upon the child type, set the imageTextView01
         tv.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
