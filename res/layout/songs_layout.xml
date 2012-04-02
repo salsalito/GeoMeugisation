@@ -3,25 +3,10 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
-<LinearLayout android:id="@+id/contentViewLayout" 
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:layout_marginBottom="55dip" >
 <ExpandableListView android:id="@+id/android:list"
                android:layout_width="fill_parent"
                android:layout_height="fill_parent"/>
-    
-    <TextView
-        android:id="@+id/monChamp"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
-
-        <requestFocus />
-    </TextView>
-   	
-</LinearLayout>
-	<ImageView
+ 	<ImageView
 	    android:id="@+id/imageview"
 	    android:layout_width="fill_parent"
 	    android:layout_height="150dip"

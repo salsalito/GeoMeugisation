@@ -129,8 +129,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
         TextView tv = (TextView) convertView.findViewById(R.id.grp_parent);
         tv.setText(group);
-        iconeLoader(group, tv);
-
         return convertView;
     }
 

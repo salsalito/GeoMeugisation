@@ -22,8 +22,13 @@ import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ExpandableListView.OnChildClickListener;
+import android.widget.ExpandableListView.OnGroupClickListener;
 
 import com.google.code.microlog4android.Logger;
 import com.meuge.adapter.ExpandableListAdapter;
@@ -132,14 +137,55 @@ public class InfosActivity extends ExpandableListActivity {
 //		                    new String[] {"Sub Item"},      // Keys in childData maps to display.
 //		                    new int[] { R.id.grp_enfant}     // Data under the keys above go into these TextViews.
 //		                );
+		       // Retrive the ExpandableListView from the layout
+					ExpandableListView listView = getExpandableListView();
+					
+					listView.setOnChildClickListener(retourneInfosEnfantsFromClick());
+			        
+			        listView.setOnGroupClickListener(retourneInfosParentsFromClick());
+					
+					
 		            setListAdapter( expListAdapter );       // setting the adapter in the list.
 		            logger.info("Fin de Calcul de Mise a Dispos des Kms");
 
 
 			
 	    }
-        ((TextView)findViewById(R.id.monChamp)).setText(resultat);
     }
+
+
+	/**
+	 * @return
+	 */
+	private OnChildClickListener retourneInfosEnfantsFromClick() {
+		return new OnChildClickListener()
+		{
+		    
+		    @Override
+		    public boolean onChildClick(ExpandableListView arg0, View arg1, int arg2, int arg3, long arg4)
+		    {
+		        Toast.makeText(getBaseContext(), "Enfant"+arg0.getSelectedItemPosition(), Toast.LENGTH_LONG).show();
+		        return false;
+		    }
+		};
+	}
+
+
+	/**
+	 * @return
+	 */
+	private OnGroupClickListener retourneInfosParentsFromClick() {
+		return new OnGroupClickListener()
+		{
+		    
+		    @Override
+		    public boolean onGroupClick(ExpandableListView arg0, View arg1, int arg2, long arg3)
+		    {
+		        Toast.makeText(getBaseContext(), "Groupe n° : "+arg0.getSelectedItemPosition(), Toast.LENGTH_LONG).show();
+		        return false;
+		    }
+		};
+	}
     private Bitmap chargeImage(String myURL)
     {
 
