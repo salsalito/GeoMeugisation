@@ -25,7 +25,9 @@
 	    <activity android:name=".MeugeActivity" />
 	    <activity android:name=".InfosActivity"/>
 	    <activity android:name=".CarteActivity"/>
-	    <activity android:name=".InscriptionActivity"></activity>
+	    <activity android:name=".InscriptionActivity"/>
+	    <activity android:name=".ArrowsActivity"/>
+	    <activity android:name=".InfosActivityGroup"/>
     </application>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" ></uses-permission>
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>

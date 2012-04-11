@@ -29,13 +29,13 @@ public class OngletsActivity extends TabActivity {
         
 		setupTab(new TextView(this), "Meuge", new Intent(this, MeugeActivity.class));
 		setupTab(new TextView(this), "Carte", new Intent(this, CarteActivity.class));
-		setupTab(new TextView(this), "Infos", new Intent(this, InfosActivity.class)); 
+		setupTab(new TextView(this), "Infos", new Intent(this, InfosActivityGroup.class));
+
 		tabHost.setCurrentTab(0);
 		}
 	
 	private void setupTab(final View view, final String tag, Intent intent) {
     	View tabview = createTabView(getTabHost().getContext(), tag);
-
 
         TabSpec setContent = getTabHost().newTabSpec(tag).setIndicator(tabview).setContent(
          getTabContentFactory(view)).setContent(intent);

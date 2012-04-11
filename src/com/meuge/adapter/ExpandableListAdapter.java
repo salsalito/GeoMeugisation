@@ -74,10 +74,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.enfants, null);
         }
-        TextView tv = (TextView) convertView.findViewById(R.id.grp_enfant);
-        tv.setText("   " + meskms.getInformations() + "["+new DecimalFormat("#,###.#").format(meskms.getNbKms())+"Kms]");
-
-        iconeLoader(meskms.getCategorie(), tv);
+//        TextView tv = (TextView) convertView.findViewById(R.id.grp_enfant);
+//        tv.setText("   " + meskms.getInformations() + "["+new DecimalFormat("#,###.#").format(meskms.getNbKms())+"Kms]");
+//
+//        iconeLoader(meskms.getCategorie(), tv);
         return convertView;
     }
 
